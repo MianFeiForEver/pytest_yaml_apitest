@@ -1,0 +1,12 @@
+get_list:
+  address: /posts
+  method: get
+  body_type: json
+add_file:
+  address: /posts
+  method: post
+  body_type: json
+get_file:
+  address: /posts/${file_id}
+  method: get
+  body_type: json

@@ -1,0 +1,6 @@
+test_get_list:
+  title: 测试资源列表
+test_add_file:
+  title: 创建资源
+test_get_file:
+  title: 获取资源信息

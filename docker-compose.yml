@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  apitest:
+    container_name: apitest
+    image: apitest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app

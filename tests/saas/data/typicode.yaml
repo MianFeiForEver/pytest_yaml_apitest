@@ -1,0 +1,21 @@
+get_list:
+  - info: 获取资源列表
+    api_name: get_list
+    set:
+      file_id: $..id
+
+add_file:
+  - info: 创建资源
+    api_name: add_file
+    data: { title: 创建资源, body: bar ,userId: 1 }
+    status: 201
+
+
+get_file:
+  - info: 获取资源信息
+    api_name: get_file
+    params: { file_id: $<file_id> }
+    get:
+      file_id: file_id
+    status: 200
+
