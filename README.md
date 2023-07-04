@@ -107,8 +107,6 @@ sms_register: #用例数据名
 
 run.py 中setup() 会清理 /case/{project}/ 下.py文件，并再次生成
 
-
-> 主站固定登录账号： 请勿修改信息
 >
 > allure serve allure-results 查看报告
 >
