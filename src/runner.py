@@ -124,8 +124,9 @@ def function_fixture(fixtures) -> list:
 def create_test_function(name, func, fixture, depends):
     depends_name = depends.get("name")
     depends = depends.get("depends_on", [])
+    scope = depends.get("scope", "module")
 
-    @pytest.mark.dependency(name=depends_name, depends=depends)
+    @pytest.mark.dependency(name=depends_name, depends=depends, scope=scope)
     def test_function(**kwargs):
         func(kwargs)
 

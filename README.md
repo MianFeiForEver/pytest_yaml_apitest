@@ -96,11 +96,12 @@ sms_register: #用例数据名
 ```
 - test_create_project: #用例名
     title: 创建项目接口 #title
-    name: create_project #pytest.mark.dependency name
-    depends: # pytest.mark.dependency depends
-      - create_team
-    scope: # pytest.mark.dependency scope
-      - session
+    depends:
+        name: create_project #pytest.mark.dependency name
+        depends_on: # pytest.mark.dependency depends
+          - create_team
+        scope: # pytest.mark.dependency scope
+          - session # scope可接受四种参数定义的类型（'session'，'package'，'module'或'class'）
     fixture: # 需要执行fixture函数，默认必备rq，value无需填写
       - login
 ```
