@@ -74,92 +74,27 @@ class ApiInfo:
         set_value("api_content", load_dir(self.api_path))
 
     @staticmethod
-    def get_base_url(api_path="", api_project=""):
-        project = env_info.get("project")
-        base_env = env_info.get("base_env", "www-cicd-test.develop")
-        if project == "saas":
-            base_url = saas_base_url(base_env, api_project)
-        elif project == "project1":
-            base_url = base_url1(base_env, api_project)
-        elif project == "project2":
-            base_url = base_url2(base_env, api_path)
-        else:
-            base_url = saas_base_url(base_env, api_project)
-        set_value("base_url", base_url)
-        return base_url
+    def get_base_url():
+        return env_info.get("base_url")
 
     def api_info(self, name, params):
         api = self.api_data().get(name)
         api_path = api.get("address")
         api_project = api.get("project", "")
-        base_url = self.get_base_url(api_path, api_project)
+        base_url = self.get_base_url()
         url = base_url + Template(api_path).safe_substitute(params)
         method = api.get("method")
         body_type = api.get("body_type", "")
         return url, method, body_type, api_project
 
 
-def base_url1(base_env, api_project):
-    def host_path(key):
-        base = {
-            "passport": {
-                "online": "sso"
-            },
-        }
-        if base_env in [""]:
-            _host_path = base.get(key).get("online")
-        else:
-            _host_path = base.get(key).get(base_env)
-        return _host_path
-
-    if api_project:
-        base_env = host_path(api_project)
-    if base_env:
-        base_env += "."
-    return f"https://{base_env}demo.com"
-
-
-def base_url2(base_env, api_path):
-    if base_env in [""]:
-        if "/demo" in api_path:
-            base_env = "demo"
-
-    return f"https://{base_env}.demo.com"
-
-
-def saas_base_url(base_env, api_project):
-    def host_path(key):
-        base = {
-            "plugin": {
-                "online": "plugin-api",
-            },
-
-        }
-        if base_env in [""]:
-            _host_path = base.get(key).get("online")
-        else:
-            _host_path = base.get(key).get(base_env)
-        return _host_path
-
-    if api_project:
-        base_env = host_path(api_project)
-    if base_env:
-        base_env += "."
-    return f"https://jsonplaceholder.typicode.com"
-
-
 def param():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--p", default="saas", choices=["saas", "project1", "project2"])
     parser.add_argument(
-        "--e",
-        default="",
-        choices=[
-            "",
-        ],
+        "--u",
+        default="https://pdp-test00.lanhuapp.com/"
     )
     parser.add_argument("--m", default="all", choices=["all", "monitor", "MON"])
-    parser.add_argument("--r", default=None)
     return parser.parse_args()
 
 

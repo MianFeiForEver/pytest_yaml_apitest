@@ -148,12 +148,12 @@ async def save_req_result(api_name, value_info, client):
 def api(api_name, data=None, params=None, cookie=None, token=None, authorization=None):
     if data is None:
         data = {}
-    url, method, body_type, project = ApiInfo().api_info(api_name, params)
+    url, method, body_type, api_project = ApiInfo().api_info(api_name, params)
     client = HttpClient(url=url, method=method, body_type=body_type)
     client.set_body(data)
     if authorization:
         client.set_header("authorization", authorization)
-    if project != "plugin":
+    if api_project != "plugin":
         client.set_cookie(cookie)
     else:
         client.set_header("authorization", token)
