@@ -6,7 +6,7 @@ from _pytest.python import Module
 
 from src.case_util import load, ApiInfo
 from src.config import results, LOG
-from src.core.wrok_log import RunningLog
+from src.wrok_log import RunningLog
 from src.runner import RunYaml
 from src.utils import time
 

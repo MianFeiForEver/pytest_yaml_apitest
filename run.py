@@ -6,18 +6,15 @@ from src.utils import save_info, get_value, DirPath, LocalDatatime
 
 if __name__ == "__main__":
     args = param()
-    project = param().p
-    env = param().e
+    base_url = param().u
     mode = param().m
-    reporter = param().r
-
-    # env = ""
+    base_url = "https://jsonplaceholder.typicode.com"
     # project = "project1"
-    save_info(project, env, reporter)
+    save_info(base_url)
     # setup()
 
     try:
-        cases = f"./tests/{project}/case/"
+        cases = f"./tests/case/"
         # cases = f"./case/{project}/test_XX.yaml"  # 可执行单文件
         main_list = [
             cases,
@@ -36,9 +33,10 @@ if __name__ == "__main__":
         ]
         if mode in ["monitor", "MON"]:
             main_list.extend(["-m", "not NOT_MON"])
+        print(main_list)
         pytest.main(main_list)
-        with open("./allure-results/environment.properties", "w+") as f:
-            f.write(f"base_url= {get_value('base_url')}")
+        # with open("./allure-results/environment.properties", "w+") as f:
+        #     f.write(f"base_url= {get_value('base_url')}")
 
         # 生成allure报告，注释后不生成allure报告
         # shell_invoke()

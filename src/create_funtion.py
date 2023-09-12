@@ -3,10 +3,10 @@ from typing import Any, Callable, Mapping, Sequence
 
 
 def create_function_from_parameters(
-    func: Callable[[Mapping[str, Any]], Any],
-    parameters: Sequence[Parameter],
-    documentation=None,
-    func_name=None,
+        func: Callable[[Mapping[str, Any]], Any],
+        parameters: Sequence[Parameter],
+        documentation=None,
+        func_name=None,
 ):
     new_signature = Signature(parameters)
 
