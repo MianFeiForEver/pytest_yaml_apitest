@@ -1,0 +1,152 @@
+# 用户中心-解绑手机号接口
+unbind_mobile:
+  - api_name: unbind
+    info: 解绑手机号
+    data: { key: mobile, value: $<mobile> }
+    get:
+      mobile: mobile
+
+# 用户中心-解绑邮箱接口
+unbind_email:
+  - api_name: unbind
+    info: 解绑邮箱
+    data: { key: email, value: $<email> }
+    get:
+      mobile: email
+
+
+get_abtest:
+  - api_name: get_abtest
+    info: 获取ab接口结果
+    data: { access_key: c769075d, prod_code: saas, user_id: $<user_id>, team_id: $<team_id>,
+            uuid: $<uuid> }
+    get:
+      team_id: team_id
+      user_id: uid
+    generate:
+      uuid: uuid
+    assertion:
+      code: 0
+      msg: 成功
+
+
+
+#      msg: Success
+put_userinfo_wechat:
+  - api_name: put_userinfo
+    info: 修改微信通知类型
+    data: { notify_type: at_self }
+    assertion:
+      code: '00000'
+      msg: Success
+put_userinfo_feishu:
+  - api_name: put_userinfo
+    info: 修改飞书通知类型
+    data: { fs_notify_type: no }
+    assertion:
+      code: '00000'
+      msg: Success
+get_user_settings:
+  - api_name: get_user_settings
+    info: 根据type获取用户配置
+    data: { settings_type: web_main }
+
+user_profile:
+  - api_name: user_profile
+    info: 存储用户配置信息
+    data:
+      info:
+        - { group: black_tech, selectMode: true, zoomMode: false }
+    assertion:
+      code: '00000'
+      msg: success
+
+user_detail:
+  - api_name: user_detail
+    info: 获取用户详情
+    data: { }
+    assertion:
+      code: '00000'
+      msg: Success
+
+
+version_tips:
+  - api_name: version_tips
+    info: 获取版本更新
+    data: { version: 2.89 }
+wechat:
+  - api_name: wechat_follow
+    info: 获取微信二维码
+    data: { }
+    assertion:
+      result.code: '00000'
+  - api_name: wechat_unbind
+    info: 微信解绑
+    data: { }
+    assertion:
+      result.code: '00000'
+      result.msg: Success
+lark_lark:
+  - api_name: lark_unbind
+    info: 解绑飞书
+    assertion:
+      result.code: '10001'
+      result.msg: No such user
+# 修改用户信息passport
+passport_userinfo:
+  - api_name: passport_userinfo
+    info: 修改用户名(passport)
+    data: { username: $<user_name> }
+    generate:
+      user_name: user_name
+    assertion:
+      code:
+        - 0
+        - 1915
+
+user_tag:
+  - api_name: user_tag
+    info: 获取用户tag
+    data: { user_id: $<u_id>, team_id: $<t_id> }
+    get:
+      t_id: team_id
+      u_id: uid
+    assertion:
+      code: '00000'
+get_user_nps:
+  - api_name: get_user_nps
+    info: 获取用户nps
+    data: { source: saas }
+    assertion:
+      code: '00000'
+vip:
+  - api_name: vip
+    info: 用户团队付费情况
+    data: { user_id: $<u_id> }
+    get:
+      u_id: uid
+    assertion:
+      code: '00000'
+
+
+user_teams:
+  - api_name: user_teams
+    info: 获取用户团队
+    data: { }
+
+
+
+user_pop_up:
+  - api_name: put_user_pop_up
+    info: 设置用户弹框
+    data: { sub_group: version_compare, read: true }
+    assertion:
+      code: '00000'
+      msg: Success
+  - api_name: user_pop_up
+    info: 获取用户弹窗信息
+    data: { sub_group: version_compare }
+    assertion:
+      code: '00000'
+      msg: Success
+      data: true

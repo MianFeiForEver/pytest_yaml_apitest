@@ -1,5 +1,4 @@
 import asyncio
-import base64
 import time
 import types
 from inspect import Parameter, Signature
@@ -14,7 +13,6 @@ from src.utils import (
     update_value,
     data_f,
     save_values,
-    set_value,
     get_token,
     get_cookie,
 )
@@ -166,32 +164,6 @@ def api(api_name, data=None, params=None, cookie=None, token=None, authorization
     return client
 
 
-def login_admin():
-    data = {"mobile_or_email": "admin@jwzg.com", "password": "Lanhu123"}
-    client = api(api_name="login", data=data)
-    ticket = client.res_to_json_path("$.data.ticket")
-    set_value("uid", client.res_to_json_path("$.data.id"))
-    auth(ticket, "login", "password")
-    if not get_value("team_id_EE"):
-        client = api(api_name="service_multi", cookie=get_value("cookie"))
-
-
 def register_test():
     email = "test@jwzg.com"
     password = "Lanhu123"
-
-
-def auth(ticket, action, action_type):
-    data = {
-        "request_from": "web",
-        "sso_ticket": ticket,
-        "action": action,
-        "action_type": action_type,
-    }
-    client = api(api_name="auth", data=data)
-    set_value("cookie", cookie := client.session_cookie)
-    client = api(api_name="entry", cookie=cookie)
-    base_token = str(client.res_to_json_path("$.token") + ":").encode("utf-8")
-    token = f"Basic {base64.b64encode(base_token).decode('utf-8')}"
-    set_value("authorization", token)
-    return client

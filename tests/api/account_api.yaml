@@ -1,0 +1,106 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+
+# 校验验证码接口：邮箱绑定接口
+#email_bind:
+#  address: /passport/api/verify_email_bind
+#  method: post
+#  body_type: json
+#  data:
+#    - email
+#    - code
+
+
+
+#登出
+
+
+
+put_userinfo:
+  address: /api/account/userinfo
+  method: put
+  body_type: json
+
+get_user_settings:
+  address: /api/account/user_settings
+  method: get
+  body_type: json
+  data:
+    - settings_type
+
+user_profile:
+  address: /api/account/user_profile
+  method: post
+  body_type: json
+  data:
+    - info
+
+user_detail:
+  address: /api/account/user/detail
+  method: get
+  body_type: json
+
+
+version_tips:
+  address: /api/account/version_tips
+  method: get
+  body_type: json
+  data:
+    - version
+
+
+
+
+# 修改用户信息
+passport_userinfo:
+  address: /passport/api/userinfo
+  method: post
+  body_type: json
+  data:
+    - username
+
+
+# 获取用户tag
+user_tag:
+  address: /api/account/user_tag
+  method: get
+  body_type: json
+  data:
+    - user_id
+    - team_id
+#
+get_user_nps:
+  address: /api/account/user_nps
+  method: get
+  data:
+    - source
+post_user_nps:
+  address: /api/account/user_nps
+  method: post
+  data:
+    - source
+put_user_nps:
+  address: /api/account/user_nps
+  method: put
+  data:
+    - source
+vip:
+  address: /api/account/user/vip
+  method: get
+  data:
+    - user_id
+# 使用token登录
+token_login:
+  address: /api/account/token_login
+  method: post
+  data:
+    - token
+
+

@@ -9,7 +9,7 @@ if __name__ == "__main__":
     base_url = param().u
     mode = param().m
     # base_url = "https://jsonplaceholder.typicode.com" #demo
-    # base_url = 'https://pdp-test00.lanhuapp.com/'
+    base_url = 'https://pdp-test00.lanhuapp.com'
     # project = "project1"
     save_info(base_url)
     # setup()

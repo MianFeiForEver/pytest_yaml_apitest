@@ -1,0 +1,24 @@
+test_version_tips:
+  title: 获取版本更新
+  fixture:
+    - login_admin
+test_get_abtest:
+  title: 获取ab接口结果
+test_user_teams:
+  title: 获取用户团队
+test_get_user_settings:
+  title: 根据type获取用户配置
+test_user_profile:
+  title: 存储用户配置信息
+test_user_detail:
+  title: 获取用户详情
+test_passport_userinfo:
+  title: 修改用户名(passport)
+test_get_user_nps:
+  title: 获取用户nps
+test_vip:
+  title: 用户团队付费情况
+test_user_pop_up:
+  title: 用户弹窗信息
+test_user_tag:
+  title: 查询用户tag
