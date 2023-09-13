@@ -6,9 +6,9 @@ from _pytest.python import Module
 
 from src.case_util import load, ApiInfo
 from src.config import results, LOG
-from src.wrok_log import RunningLog
 from src.runner import RunYaml
 from src.utils import time
+from src.wrok_log import RunningLog
 
 logger = RunningLog().get_logger()
 
@@ -43,12 +43,10 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
 def pytest_generate_tests(metafunc):  # noqa
     """测试用例参数化功能实现"""
     params_data = getattr(metafunc.module, f"{metafunc.function.__name__}_data")
-    metafunc.parametrize(
-        "value",
-        params_data,
-        ids=[value.get("info") for value in params_data],
-        scope="function",
-    )
+    # 获取测试用例参数化数据
+    if params_data: metafunc.parametrize("value", params_data,
+                                         ids=[value.get("info") for value in params_data],
+                                         scope="function")
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)

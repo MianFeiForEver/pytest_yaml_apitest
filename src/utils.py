@@ -8,7 +8,7 @@ from configobj import ConfigObj
 from faker import Faker
 from jsonpath import jsonpath
 
-from src.config import PARAMS, env_info, BasePath
+from src.config import PARAMS, BasePath
 
 
 def singleton(cls):
@@ -175,10 +175,6 @@ def get_value(key):
     return value if value else None
 
 
-def get_info(key):
-    return env_info.get(key)
-
-
 def get_cookie():
     cookie = get_value("cookie")
     if cookie:
@@ -189,8 +185,20 @@ def get_token():
     return get_value("plugin_token")
 
 
-def save_info(base_url):
-    env_info.update({"base_url": base_url})
+def set_ini(key, value):
     config = ConfigObj("pytest.ini", encoding="UTF8")
-    config["pytest"]["base_url"] = base_url
+    config["pytest"][key] = value
     config.write()
+
+
+def get_ini(key):
+    config = ConfigObj("pytest.ini", encoding="UTF8")
+    return config["pytest"][key]
+
+
+def get_base_url():
+    return get_ini("base_url")
+
+
+def save_info(base_url):
+    set_ini("base_url", base_url)

@@ -1,6 +1,16 @@
 from enum import Enum
 
-PARAMS = {}
+admin_email = "admin@jwzg.com"
+admin_password = "Lanhu123"
+test_email = "test@jwzg.com"
+test_password = "Lanhu123"
+init_user = {
+    "admin_email": admin_email,
+    "admin_password": admin_password,
+    "test_email": test_email,
+    "test_password": test_password
+}
+PARAMS = init_user
 results = {}
 req_results = {}
 LOG = {}

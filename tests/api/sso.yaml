@@ -1,0 +1,94 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+#检查是否已登录
+is_auth:
+  address: /api/sso/is_auth
+  method: get
+  body_type: json
+
+#获取ticket
+acquire:
+  address: /api/passport/ticket/acquire
+  method: get
+  body_type: json
+
+# 检查用户信息是否完整
+incomplete:
+  address: /api/passport/userinfo/incomplete
+  method: get
+  body_type: json
+
+#sso/email
+# 检查邮箱
+check_email:
+  address: /api/sso/email/check
+  method: post
+  body_type: json
+  data:
+    - email
+
+#邮箱登录
+login:
+  address: /api/sso/email/login
+  method: post
+  body_type: json
+  data:
+    - email
+    - password
+#邮箱注册
+register:
+  address: /api/sso/email/register
+  method: post
+  body_type: json
+  data:
+    - email
+    - password
+
+# 发送重置密码邮件
+send_email_reset_password:
+  address: /api/sso/email/reset_password
+  method: post
+  body_type: json
+  data:
+    - email
+
+# 通过邮件重置密码
+sso_reset_password:
+  address: /api/sso/email/reset_password
+  method: put
+  body_type: json
+  data:
+    - password
+
+#saas 登录后处理
+
+auth:
+  address: /api/auth
+  method: get
+  body_type: json
+  data:
+    - request_from   #web
+    - sso_ticket
+    - redirect_uri
+    - action   #login/register
+    - action_type   #password/code
+
+
+#退出登录
+logout:
+  address: /api/account/login
+  method: put
+  body_type: json
+
+
+#entry
+entry:
+  address: /api/account/entry
+  method: get
+  body_type: json

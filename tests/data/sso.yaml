@@ -1,0 +1,175 @@
+check_email:
+  - api_name: check_email
+    info: 邮箱已注册
+    data: { email: $<email> }
+    get:
+      email: admin_email
+    assertion:
+      code: 10003
+  - api_name: check_email
+    info: 邮箱未注册
+    data: { email: 1000000@1.lanhuapp }
+    assertion:
+      code: '00000'
+
+login:
+  - api_name: login
+    info: 账号格式错误
+    data: { email: '123', password: Lanhu123 }
+    assertion:
+      code: 10002
+  - api_name: login
+    info: 账号或密码不匹配
+    data: { email: $<email>, password: '123456' }
+    get:
+      email: admin_email
+    assertion:
+      code: 10002
+  - api_name: login
+    info: 邮箱登录成功
+    data: { email: $<email>, password: $<password> }
+    get:
+      email: admin_email
+      password: admin_password
+    set:
+      cookie: cookie
+      #      uid: $.data.id
+      ticket: $.result.ticket
+    assertion:
+      code: '00000'
+  - api_name: auth
+    info: 密码登录auth
+    data: { sso_ticket: $<ticket>, action: login, action_type: password }
+    get:
+      ticket: ticket
+    set:
+      cookie: cookie
+logout:
+  - api_name: logout
+    data: { code: 10031 }
+    info: 正常退出
+    assertion:
+      code: '00000'
+      msg: Success
+  - api_name: logout
+    data: { code: 10031 }
+    info: 无cookie退出
+    cookies: false
+    assertion:
+      code: '00000'
+      msg: Success
+
+is_auth:
+  - api_name: is_auth
+    info: 无效cookie验证
+    assertion:
+      code: '00000'
+      data.is_auth: false
+  - api_name: login
+    info: 邮箱登录
+    data: { email: $<email>, password: $<password> }
+    cookies: false
+    get:
+      email: admin_email
+      password: admin_password
+    set:
+      cookie: cookie
+    assertion:
+      code: '00000'
+  - api_name: is_auth
+    info: 登录后验证
+    assertion:
+      code: '00000'
+      data.is_auth: true
+acquire:
+  - api_name: acquire
+    info: 无cookie
+    status: 401
+    cookies: false
+    assertion:
+      code: 1000
+  - api_name: acquire
+    info: 获取ticket成功
+    assertion:
+      code: '00000'
+      data.ticket: exist
+
+
+send_email_reset_password:
+  - api_name: send_email_reset_password
+    info: 发送忘记密码邮件
+    data: { email: $<email> }
+    get:
+      email: test_email
+    assertion:
+      code: '00000'
+  - api_name: send_email_reset_password
+    info: 未注册邮箱发送忘记密码邮件
+    data: { email: 1000000@1.lanhuapp }
+    assertion:
+      code: '10001'
+  - api_name: send_email_reset_password
+    info: 邮箱格式不正确发送忘记密码邮件
+    data: { email: '123' }
+    assertion:
+      code: '10001'
+
+
+#email_reset_password:
+#  - api_name: login
+#    info: 重置密码登录
+#    data: { email: qa_enterprise@jwzg.com, password: Lanhu123 }
+#    set:
+#      cookie: cookie
+#      ticket: $.result.ticket
+#    assertion:
+#      code: '00000'
+#  - api_name: auth
+#    info: 重置密码登录auth
+#    data: { sso_ticket: $<ticket>, action: login, action_type: password }
+#    get:
+#      ticket: ticket
+#    set:
+#      cookie: cookie
+#  - api_name: sso_reset_password
+#    info: 新密码长度不够
+#    data: { password: L1234 }
+#    assertion:
+#      code: '10025'
+#  - api_name: sso_reset_password
+#    info: 新密码格式不正确
+#    data: { password: 'Lanhu123' }
+#    assertion:
+#      code: '10025'
+#  - api_name: sso_reset_password
+#    info: 设置新密码成功
+#    data: { password: Lanhu123 }
+#    assertion:
+#      code: '00000'
+#  - api_name: sso_reset_password
+#    info: 无cookie设置新密码
+#    data: { password: Lanhu123 }
+#    cookies: false
+#    status: 200
+#    assertion:
+#      code: '10001'
+email_register:
+  - api_name: register
+    info: 未注册邮箱注册
+    data: { email: $<email> , password: $<password> }
+    get:
+      email: test_email
+      password: test_password
+
+    assertion:
+      code: '00000'
+      msg: Success
+  - api_name: register
+    info: 已注册邮箱注册
+    data: { email: $<email> , password: $<password> }
+    get:
+      email: test_email
+      password: test_password
+    assertion:
+      code: 10021
+

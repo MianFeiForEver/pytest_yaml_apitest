@@ -2,13 +2,14 @@
 import pytest
 
 from src.case_util import param
-from src.utils import save_info, get_value, DirPath, LocalDatatime
+from src.utils import save_info, DirPath, LocalDatatime, get_base_url
 
 if __name__ == "__main__":
     args = param()
     base_url = param().u
     mode = param().m
-    base_url = "https://jsonplaceholder.typicode.com"
+    # base_url = "https://jsonplaceholder.typicode.com" #demo
+    # base_url = 'https://pdp-test00.lanhuapp.com/'
     # project = "project1"
     save_info(base_url)
     # setup()
@@ -33,10 +34,9 @@ if __name__ == "__main__":
         ]
         if mode in ["monitor", "MON"]:
             main_list.extend(["-m", "not NOT_MON"])
-        print(main_list)
         pytest.main(main_list)
-        # with open("./allure-results/environment.properties", "w+") as f:
-        #     f.write(f"base_url= {get_value('base_url')}")
+        with open("./allure-results/environment.properties", "w+") as f:
+            f.write(get_base_url())
 
         # 生成allure报告，注释后不生成allure报告
         # shell_invoke()

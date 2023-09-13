@@ -6,8 +6,7 @@ from string import Template
 
 from ruamel.yaml import YAML
 
-from .config import env_info
-from .utils import set_value, DirPath, singleton, get_value
+from .utils import set_value, DirPath, singleton, get_value, get_base_url
 
 
 def replace_data(data, up_dict):
@@ -73,15 +72,11 @@ class ApiInfo:
         set_value("data_content", load_dir(self.data_path))
         set_value("api_content", load_dir(self.api_path))
 
-    @staticmethod
-    def get_base_url():
-        return env_info.get("base_url")
-
     def api_info(self, name, params):
         api = self.api_data().get(name)
         api_path = api.get("address")
         api_project = api.get("project", "")
-        base_url = self.get_base_url()
+        base_url = get_base_url()
         url = base_url + Template(api_path).safe_substitute(params)
         method = api.get("method")
         body_type = api.get("body_type", "")
