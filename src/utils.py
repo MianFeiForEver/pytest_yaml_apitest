@@ -1,18 +1,14 @@
 import base64
-import hashlib
 import json
-import socket
-import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from time import time
 
-import pyotp
 from configobj import ConfigObj
 from faker import Faker
 from jsonpath import jsonpath
 
-from src.config import PARAMS, env_info, BasePath
+from src.config import PARAMS, BasePath
 
 
 def singleton(cls):
@@ -85,19 +81,16 @@ def get_time():
 @singleton
 class DirPath:
     def __init__(self):
-        self.project = env_info.get("project")
         self.base_dir = Path.cwd()
         self.config_path = self.base_dir / BasePath.config_path.value
         self.allure_path = self.base_dir / "allure-results"
-        self.api_path = self.config_path / f"{self.project}/api"
-        self.data_path = self.config_path / f"{self.project}/data"
-        self.cases_dir = self.config_path / f"case/{self.project}/"
-        self.case_path = self.config_path / f"{self.project}/case"
-        self.logs_path = self.base_dir / BasePath.logs_path.value / f"{self.project}/{get_date()}/"
-        self.log_path = self.logs_path / f"{get_datetime()}.log"
-        self.monitor_path = self.base_dir / BasePath.monitor_path.value / f"{self.project}/{get_date()}"
-        self.html_path = self.base_dir / BasePath.html_path.value / f"{self.project}/{get_date()}"
-        self.files_path = self.base_dir / BasePath.files_path.value / f"{self.project}/{get_date()}"
+        self.api_path = self.config_path / "api"
+        self.data_path = self.config_path / "data"
+        self.case_path = self.config_path / "case"
+        self.log_path = self.base_dir / BasePath.logs_path.value / f"{get_datetime()}.log"
+        self.monitor_path = self.base_dir / BasePath.monitor_path.value / f"{get_date()}"
+        self.html_path = self.base_dir / BasePath.html_path.value / f"{get_date()}"
+        self.files_path = self.base_dir / BasePath.files_path.value / f"{get_date()}"
 
 
 def data_f(value, key=None):
@@ -125,7 +118,7 @@ def data_f(value, key=None):
         return f.phone_number()
 
     def code():
-        return create_code(get_value(key.get("mobile", "")))
+        return "123456"
 
     def create_timenow():
         return int(round(time() * 1000))
@@ -146,18 +139,6 @@ def data_f(value, key=None):
         return actions[value]()
     else:
         return None
-
-
-def create_code(mobile):
-    m = hashlib.md5()
-    m.update(bytes(mobile.encode("utf8")))
-    md5mobile = m.hexdigest()
-    key = "MM3N7TG1ZDC8OJU1BC1TLG3HA1CIZ2UH"
-    key += md5mobile
-    totp = pyotp.TOTP(
-        s=base64.b32encode(bytes(key.encode("utf8"))).decode("utf-8"), interval=30
-    )
-    return totp.now()
 
 
 async def save_values(need_set: dict, client):
@@ -194,10 +175,6 @@ def get_value(key):
     return value if value else None
 
 
-def get_info(key):
-    return env_info.get(key)
-
-
 def get_cookie():
     cookie = get_value("cookie")
     if cookie:
@@ -208,17 +185,20 @@ def get_token():
     return get_value("plugin_token")
 
 
-def save_info(project, env, reporter):
-    reporter = (
-        "Jenkins"
-        if reporter == "jenkins"
-        else subprocess.getoutput("git config user.name") or socket.gethostname()
-    )
-    env_info.update({"project": project, "base_env": env, "reporter": reporter})
+def set_ini(key, value):
     config = ConfigObj("pytest.ini", encoding="UTF8")
-    config["pytest"]["reporter"] = reporter
-    config["pytest"]["project"] = project
-    config["pytest"]["base_env"] = env
-    config["pytest"]["testpaths"] = f"tests/{project}/case/"
-    config["pytest"]["base_url"] = f'https://{env + "." if env else ""}lanhuapp.com/'
+    config["pytest"][key] = value
     config.write()
+
+
+def get_ini(key):
+    config = ConfigObj("pytest.ini", encoding="UTF8")
+    return config["pytest"][key]
+
+
+def get_base_url():
+    return get_ini("base_url")
+
+
+def save_info(base_url):
+    set_ini("base_url", base_url)

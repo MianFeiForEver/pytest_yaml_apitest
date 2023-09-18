@@ -1,0 +1,778 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+#项目
+#创建项目
+create_project:
+  address: /api/project/project_info
+  method: post
+  body_type: json
+  data:
+    - name
+    - team_id
+    - folder_id
+    - order_index
+    - code
+#删除项目
+del_project:
+  address: /api/project/project_info
+  method: delete
+  body_type: json
+  data:
+    - code
+    - project_id
+    - team_id
+    - p_name
+quit_project:
+  address: /api/project/quit_project
+  method: post
+  body_type: json
+  data:
+    - pid
+    - team_id
+#项目加人
+project_add_member:
+  address: /api/project/project_info
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - pid
+    - add_users
+#项目删人
+project_rm_member:
+  address: /api/project/project_info
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - pid
+    - rm_users
+#修改项目类型
+change_project_type:
+  address: /api/project/project_info
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - type
+#修改项目名称
+change_project_name:
+  address: /api/project/project_info
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - name
+#项目信息综合接口
+project_multi_info:
+  address: /api/project/multi_info
+  method: get
+  body_type: json
+  data:
+    - project_id
+    - team_id
+    - img_limit
+    - doc_info
+    - members
+#获取项目信息
+get_project_info:
+  address: /api/project/project_info
+  method: put
+  body_type: json
+  data:
+    - team_id
+#获取项目成员信息
+project_user:
+  address: /api/project/project_user
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
+#移动项目到其他团队
+move_project_folder:
+  #  address: /api/project/update_project_folder
+  address: /api/project/project_folder
+  method: put
+  body_type: json
+  data:
+    - projects: [ ]
+    - team_id
+    - folder_id
+    - code
+multiple_projects:
+  address: /api/project/multiple_projects
+  method: post
+  body_type: json
+
+# 批量修改文件夹order_index
+upload_image:
+  address: /api/project/image
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - images
+
+get_image:
+  address: /api/project/image
+  method: get
+  body_type: json
+  data:
+    - images
+    - project_id
+put_image:
+  address: /api/project/image
+  method: put
+  body_type: form-data
+  data:
+    - project_id
+    - images
+del_image:
+  address: /api/project/image
+  method: delete
+  body_type: json
+  data:
+    - image_ids
+    - project_id
+    - team_id
+
+#状态图图片删除
+set_type_image_delete:
+  address: /api/project/set_type_image_delete
+  method: put
+  body:
+    - project_id
+    - sets:
+        - set_id
+        - group_start
+        - images
+
+#更新图片版本名称
+update_version:
+  address: /api/project/update_version
+  method: put
+  body_type: json
+  data:
+    - version_id
+    - name
+
+#图片新增/更新提示
+user_pic_status:
+  address: /api/account/user_pic_status
+  method: get
+  body_type: json
+  data: project_id
+
+#替换违规图片为占位图
+copyimage:
+  address: /api/project/copyimage
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - team_id
+    - images
+search_image:
+  address: /api/project/search_image
+  method: get
+  body_type: json
+  data:
+    - pid
+    - team_id
+    - keyword
+link:
+  address: /api/project/link
+  method: post
+  body_type: json
+  data:
+    - links
+    - project_id
+
+del_link:
+  address: /api/project/link
+  method: delete
+  body_type: json
+  data:
+    - links
+    - project_id
+connection_explain:
+  address: /api/project/connection_explain
+  method: post
+  body_type: json
+  data:
+    - width
+    - height
+    - explain
+    - link_id
+    - project_id
+
+comment:
+  address: /api/project/comment
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - P_name
+    - version_id
+    - comment
+    - image_id
+    - position_x
+    - position_y
+    - text
+    - team_id
+put_comment:
+  address: /api/project/comment
+  method: put
+  body_type: json
+  data:
+    - comment_id
+    - content
+    - position_x
+    - position_y
+    - team_id
+reply_comment:
+  address: /api/project/comment
+  method: post
+  body_type: json
+  data:
+    - comment_id
+    - image_id
+    - project_id
+    - reply_id
+    - p_name
+    - content
+    - version_id
+change_comment_status:
+  address: /api/project/comment
+  method: put
+  body_type: json
+  data:
+    - comment_id
+    - team_id
+    - read
+del_comment:
+  address: /api/project/comment
+  method: put
+  body_type: json
+  data:
+    - comment_id
+    - project_id
+    - image_id
+
+
+
+# 画布上新增评论
+new_add_comment:
+  address: /api/comment/v1/comment
+  method: post
+  body_type: json
+  data:
+    - anchor_uuid
+    - resource_id
+    - resource_type
+    - ext_data
+    - comment_text
+    - at_list
+    - type
+    - group_id
+    - group_type
+
+# 获取评论内容
+new_get_comment_multi:
+  address: /api/comment/v1/comment/multi
+  method: post
+  body_type: json
+  data:
+    - anchor_ids
+    - page_num
+    - per_page
+    - resource_id
+    - resource_type
+# 获取评论条数
+new_get_comment_count:
+  address: /api/comment/v1/reply/count
+  method: post
+  body_type: json
+  data:
+    - comment_ids
+    - resource_id
+    - resource_type
+# 添加回复
+new_comment_replay:
+  address: /api/comment/v1/comment
+  method: post
+  body_type: json
+  data:
+    - anchor_id
+    - anchor_uuid
+    - at_list
+    - comment_ext_data
+    - comment_text
+    - resource_id
+# 编辑评论
+new_comment_update:
+  address: /api/comment/v1/comment
+  method: put
+  body_type: json
+  data:
+    - comment_id
+    - comment_text
+    - at_list
+    - resource_id
+    - resource_type
+
+# 获取回复内容
+new_get_comment_replay:
+  address: /api/comment/v1/reply/multi
+  method: post
+  body_type: json
+  data:
+    - comment_ids
+    - per_page
+    - resource_id
+    - resource_type
+    - page_num
+
+#根据资源获取锚点
+new_get_anchor:
+  address: /api/comment/v1/anchor/multi
+  method: post
+  body_type: json
+  data:
+    - resources
+    - per_page
+    - op_status
+    - page_num
+
+# 删除回复
+new_delete_replay:
+  address: /api/comment/v1/comment
+  method: delete
+  body_type: json
+  data:
+    - comment_id
+    - resource_id
+    - resource_type
+
+#删除锚点
+new_delete_anchor:
+  address: /api/comment/v1/anchor
+  method: delete
+  body_type: json
+  data:
+    - anchor_id
+    - resource_id
+    - resource_type
+
+sector:
+  address: /api/project/sector
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - name
+    - image_ids
+    - id
+
+rename_sector:
+  address: /api/project/sector
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - name
+    - sector_id
+
+change_sector:
+  address: /api/project/sector
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - secttor_id
+    - rm_image_ids
+    - aadd_image_ids
+del_sector:
+  address: /api/project/sector_new
+  method: delete
+  body_type: json
+  data:
+    - secttor_id
+sector_sort:
+  address: /api/project/sector_sort
+  method: put
+  body_type: json
+  data:
+    - pre_child_sector_id
+    - next_child_sector_id
+    - mv_sector_id
+    - project_id
+
+sector_image_sort:
+  address: /api/project/sector_image_sort
+  method: put
+  body_type: json
+  data:
+    - target_sector_id
+    - pre_image_id
+    - next_image_id
+    - project_id
+
+get_project_sectors:
+  address: /api/project/project_sectors
+  method: get
+  body_type: json
+  data:
+    - project_id
+
+get_bookmark:
+  address: /api/project/bookmark
+  method: get
+  body_type: json
+  data:
+    - project_id
+bookmark:
+  address: /api/project/bookmark
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - bookmarks:
+        - name,url,bookmark_id,type,file
+put_bookmark:
+  address: /api/project/bookmark
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - bookmarks:
+        - name,url,bookmark_id,type,filename,order
+
+del_bookmark:
+  address: /api/project/bookmark
+  method: delete
+  body_type: json
+  data:
+    - project_id
+    - bookmark_id
+
+project_cover:
+  address: /api/project/project_cover
+  method: post
+  body_type: json
+  data:
+    - url
+    - project_id
+
+get_compressed:
+  address: /api/project/get_compressed
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - pid
+get_cntlimitinfo:
+  address: /api/project/image/cntlimitinfo
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
+
+
+prototype:
+  address: /api/project/prototype
+  method: post
+  body_type: json
+  data:
+    - code
+    - p_nmae
+    - team_id
+    - project_id
+    - positions
+
+get_prototype:
+  address: /api/project/prototype
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
+
+
+image_home:
+  address: /api/project/image_home
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - p_id
+    - p_name
+    - code
+    - image_set
+
+get_image_home:
+  address: /api/project/image_home
+  method: get
+  body_type: json
+  data:
+    - pid
+    - teaam_id
+
+recently_used_project:
+  address: /api/lhnotify/project/recently_used_project
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+
+
+
+#状态图
+set_type:
+  address: /api/project/set_type
+  method: post
+  body_type: json
+  body:
+    - project_id
+    - set_id
+    - group_end
+
+#更新画布状态图
+up_set_type:
+  address: /api/project/set_type
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - set_id
+    - group_start
+    - group_end
+#删除画布状态图
+del_set_type:
+  address: /api/project/set_type
+  method: delete
+  data:
+    - project_id
+    - set_id
+    - group_start
+
+#编辑区
+base:
+  address: /api/image_center/file/base
+  method: post
+  body_type: form-data
+  data:
+    - model
+    - max_size
+    - auth_key
+    - type
+    - auth_par
+    - save_par
+    - switch
+    - files
+
+#修改用户项目权限
+role:
+  address: /api/project/role
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - code
+    - user_id
+    - permission_mode
+
+#图片对比
+image_contrast:
+  address: /api/base_api/image_algorithm/image_contrast
+  method: post
+  body_type: json
+  data:
+    - origin_url
+    - current_url
+
+#批量获取图片信息
+#有鉴权，需特殊处理
+image_details:
+  address: /api/base_api/image/details
+  method: post
+  body_type: json
+  data:
+    - image_ids: [ ]
+    - product_id
+    - time
+    - sign
+
+#获取角色列表
+get_onboard_user:
+  address: /api/account/onboard_user
+  method: get
+  body_type: json
+  data:
+    - user_id
+    - lan_type
+    - team_id
+
+#添加用户信息，创建团队
+onboard_team:
+  address: /api/account/onboard_team
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - lan_type
+
+#获取项目类型列表
+team_member:
+  address: /api/account/member
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+#搜索项目内产品文档
+project_product_search:
+  address: /api/project/project_product_search
+  method: get
+  body_type: json
+  data:
+    - top
+    - pid
+    - keyword
+# 搜索项目下分组和图片
+search_image_sector:
+  address: /api/project/search_sector_image
+  method: get
+  body_type: form-data
+  data:
+    - pid
+    - keyword
+    - top
+    - bucket
+#获取项目的文档
+image_pre_check:
+  address: /api/project/image_pre_check
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - image_sids
+
+#回收站资源删除
+recall_notify_trash:
+  address: /api/project/recall_notify_trash
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - team_id
+    - images
+
+#回收站消息恢复通知
+follow_login:
+  address: /api/wechat/follow_login
+  method: get
+  body_type: json
+  data: 不需要参数
+
+#新增文档消息
+latest_version:
+  address: /api/access_control/latest_version
+  method: get
+  body_type: json
+  data: 无需参数
+
+#获取团队是否弹窗
+check_wechat_unionid:
+  address: /api/account/check_wechat_unionid
+  method: get
+  body_type: json
+  data: 无需参数
+
+#清理绑定关系
+clear_wechat_bind:
+  address: /api/account/clear_wechat_bind
+  method: delete
+  body_type: json
+  data: 无需参数
+
+#轮询检查扫码绑定状态
+check_wechat_connect_status:
+  address: /api/account/check_wechat_connect_status
+  method: get
+  body_type: json
+  data: 无需参数
+
+#确认换绑
+unique_wechat_bind:
+  address: /api/account/unique_wechat_bind
+  method: post
+  body_type: json
+  data: 无需参数
+
+#获取协同引擎鉴权签名
+widgets_upload_image:
+  address: /api/project/widgets/image
+  method: post
+  body_type: json
+  data: files
+
+#画布页文档信息存储接口
+get_drawer_page:
+  address: /api/drawer/page
+  method: get
+  body_type: json
+  data: 无需参数
+#c端抽屉展示-文章详情
+post_drawer_page:
+  address: /api/drawer/page
+  method: post
+  body_type: json
+  data: id
+
+#c端抽屉页-获取当前版本
+drawer_version:
+  address: /api/drawer/version
+
+  method: get
+  body_type: json
+  data: 无需参数
+
+#主站自定义弹窗
+drawer_popups:
+  address: /api/drawer/popups
+  method: get
+  body_type: json
+  data: 无需参数
+
+
+
+#获取项目详情页的权限点
+permission:
+  address: /api/project/permission
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - tenant_id
+
+# 搜索项目下分组和图片
+search_project_image_sector:
+  address: /api/project/search_sector_image
+  method: get
+  body_type: form-data
+  data:
+    - pid
+    - keyword
+    - top
+    - bucket

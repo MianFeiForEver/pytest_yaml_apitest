@@ -1,0 +1,135 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+#创建团队
+create_team:
+  address: /api/account/team/${team_id}
+  method: post
+  body_type: url-encode
+  data:
+    - email
+    - password
+
+user_teams:
+  address: /api/account/user_teams
+  method: get
+  body_type: json
+
+#获取团队信息
+get_team:
+  address: /api/account/team/${team_id}
+  method: get
+  body_type: json
+team_multi_info:
+  address: /api/team/multi_info
+  method: get
+  body_type: json
+  data:
+    - team_id
+#移交团队
+put_team:
+  address: /api/account/team/${team_id}
+  method: put
+  body_type: json
+
+user_in_team_nickname:
+  address: /api/account/user_in_team_nickname
+  method: put
+  body_type: json
+  data:
+    - user_id
+    - team_id
+    - nickname
+
+#修改团队成员权限
+quota:
+  address: /api/account/team/quota
+  method: get
+  body-type: json
+  data:
+    - team_id
+
+# team审核
+# 邀请者的操作
+# 开启团队审核
+audit_open:
+  address: /api/account/team/${audit_team_id}
+  method: put
+  body_type: json
+  data:
+    - audit
+    - team_id
+# team审核生成邀请链接
+invite_serializer:
+  address: /api/project/serializer
+  method: post
+  body_type: json
+  data:
+    - data: { date: '2022-03-17', team_id: 31b83313-1596-4e01-91a4-aa5ab1f32354, project_ids: '',
+              role: member, team_name: TestTeam, avatar: 'null', username: tianxia, color: orange,
+              invite_id: c53ac363-a566-4937-91da-ce84a17ea1f6, by: share_link, s: team_link }
+    - time
+
+# team审核生成短链
+invite_short_url:
+  address: /url/short
+  method: post
+  body_type: url-encode
+  data:
+    - url: https://lanhuapp.com/web/#!/user/invite?tid=10071911-d0ac-46a6-b21a-5454625e59b1
+    - param
+    - param_time
+# team审核获取申请加入用户列表
+get_teamaudit:
+  address: /api/account/teamaudit
+  method: get
+  body_type: url-encode
+  data:
+    - teamid
+    - per_page
+    - page_num
+
+# team审核审核通过
+re_invite_serializer:
+  address: /api/project/serializer
+  method: get
+  body_type: url-encode
+  data:
+    - serialized_str
+
+remove_member:
+  address: /api/account/remove_member
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - user_id
+quit_team:
+  address: /api/account/remove_member
+  method: post
+  body_type: json
+  data:
+    - team_id
+#获取成员项目
+user_projects:
+  address: /api/account/user_projects
+  method: get
+  body_type: json
+  data:
+    - team_id
+team_detail:
+  address: /api/account/team/detail
+  method: get
+  body_type: json
+  data: { is_service: true, team_id: $<team_id> }
+  get:
+    t_id: team_id
+  assertion:
+    code: '00000'
+    msg: Success

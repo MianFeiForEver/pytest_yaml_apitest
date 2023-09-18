@@ -1,0 +1,4 @@
+get_abtest:
+  address: /api/abtest/v1/ab
+  method: post
+  body_type: json

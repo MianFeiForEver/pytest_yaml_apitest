@@ -1,0 +1,37 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+#notify
+notify_team:
+  address: /api/lhnotify/notify/team
+  method: get
+  body_type: json
+  data: team_id
+put_notify_team:
+  address: /api/lhnotify/notify/team
+  method: put
+  body_type: json
+  data: team_id
+notify_project:
+  address: /api/lhnotify/notify/project
+  method: get
+  body_type: json
+  data: team_id
+put_notify_project:
+  address: /api/lhnotify/notify/project
+  method: put
+  body_type: json
+  data: team_id
+message_cnt:
+  address: /api/lhnotify/notify/project/message_cnt
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id

@@ -1,0 +1,437 @@
+# 获取审核状态
+get_approval_status:
+  address: /api/admin/tenant_setting/approval
+  method: get
+  body_type: x-www-form-urlencoded
+  data:
+    - tenant_id
+# 退出团队
+modify_tenant_info:
+  address: /api/admin/tenant_setting/modify_info
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - tenant_name
+# 合并团队-新
+approval_setting:
+  address: /api/admin/tenant_setting/approval
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - audit
+# 移交企业
+transfer_tenant:
+  address: /api/admin/tenant_setting/transfer
+  method: put
+  body_type: json
+  data:
+    - tenant_id
+    - to_user_id
+# 合并企业-老
+merge_tenant_old:
+  address: /api/admin/tenant_setting/merge
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - mode
+    - target_tenant_id
+    - folder_name
+
+# 解散企业
+dissolve_tenant:
+  address: /api/admin/tenant_setting/dissolve
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - name
+    - password
+# 获取团队下文件夹项目
+tenant_folder_project:
+  address: /api/admin/tenant/user_folder_project
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+    - user_id
+    - folder_id
+    - folder_order
+    - project_order
+    - is_all
+# 获取团队详细信息
+tenant_info:
+  address: /api/admin/tenant/info
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+# 触发条件判断
+trigger_condition_judgment:
+  address: /api/admin/onboarding/user_profile
+  method: get
+  body_type: json
+  data:
+    - group
+    - transform
+# 完成新人引导
+close_new_guide:
+  address: /api/admin/onboarding/user_profile
+  method: post
+  body_type: json
+  data:
+    - info:
+        group: admin_introduction
+        FirstEnterAdminTypeOld: true
+        FirstEnterAdminTypeNew: false
+# 项目列表页显示
+get_user_admin_permission:
+  address: /api/admin/permission/info
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+# 获取全部成员的席位列表
+seat_member_list:
+  address: /api/admin/seat/member
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - page_no
+    - page_size
+    - keyword
+    - seat_filter: [ ]
+    - role_filter: [ ]
+    - sort_key
+# 批量分配席位
+allocate_many:
+  address: /api/admin/seat/allocate_many
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - member_list:
+        - user_id
+        - seats:
+            - saas
+            - ts
+# 取消席位
+cancel_seat:
+  address: /api/admin/seat/cancel
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - user_id
+    - seat_type
+# 授予席位
+allocate_seat:
+  address: /api/admin/seat/allocate
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+    - user_id
+    - seat_type
+# 获取可分配席位
+available_seat:
+  address: /api/admin/seat/avaliable
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+#用户组列表
+admin_group_list:
+  address: /api/admin/group/list
+  method: post
+  body_type: json
+  data:
+    - page_no
+    - page_size
+    - tenant_id
+    - cur_user_id
+#新建用户组
+create_meta:
+  address: /api/admin/group/meta
+  method: post
+  body_type: json
+  data:
+    - group_name
+    - description
+    - cur_user_id
+    - tenant_id
+#修改用户组
+edit_meta:
+  address: /api/admin/group/meta
+  method: put
+  body_type: json
+  data:
+    - group_name
+    - description
+    - group_id
+    - tenant_id
+    - cur_user_id
+#添加成员
+post_member:
+  address: /api/admin/group/member
+  method: post
+  body_type: json
+  data:
+    - group_id
+    - member_list: [ ]
+    - tenant_id
+    - cur_user_id
+#移除成员
+delete_member:
+  address: /api/admin/group/member
+  method: delete
+  body_type: json
+  data:
+    - group_id
+    - user_id
+    - tenant_id
+    - cur_user_id
+#用户组成员
+group_member_list:
+  address: /api/admin/group/member/list
+  method: post
+  body_type: json
+  data:
+    - page_no
+    - page_size
+    - group_id
+    - type
+    - tenant_id
+    - cur_user_id
+#删除用户组
+del_meta:
+  address: /api/admin/group/meta
+  method: delete
+  body_type: json
+  data:
+    - group_id
+    - tenant_id
+    - cur_user_id
+#更新用户组顺序
+update_group_order:
+  address: /api/admin/group/update_order
+  method: post
+  body_type: json
+  data:
+    - group_order_list: [ ]
+    - tenant_id
+    - cur_user_id
+
+#成员列表
+member_list:
+  address: /api/admin/member/list
+  method: post
+  body_type: json
+  data:
+    - page_no
+    - page_size
+    - include_invite
+    - keyword
+    - key_sort
+    - tenant_id
+    - cur_user_id
+#批量用户增加用户组
+member_groups:
+  address: /api/admin/member/groups
+  method: post
+  body_type: json
+  data:
+    - data:
+        - user_id
+        - rm_groups: [ ]
+        - add_groups: [ ]
+
+
+#批量更新成员项目
+admin_update_projects:
+  address: /api/admin/member/update_projects
+  method: post
+  body_type: json
+  data:
+    - user_ids: [ ]
+    - project_ids: [ ]
+    - action
+    - batch
+    - tenant_id
+    - cur_user_id
+#导出成员列表
+export_members:
+  address: /api/admin/member/export
+  method: get
+  body_type: form-data
+  data:
+    - tenant_id
+    - cur_user_id
+#某个成员所属用户组
+get_member_groups:
+  address: /api/admin/member/groups
+  method: get
+  body_type: form-data
+  data:
+    - user_id
+    - tenant_id
+    - cur_user_id
+#用户增加多个用户组
+put_member_groups:
+  address: /api/admin/member/groups
+  method: put
+  body_type: json
+  data:
+    - data: [ ]
+    - tenant_id
+    - cur_user_id
+#成员信息修改(单个)
+update_member_info:
+  address: /api/admin/member/update_info
+  method: post
+  body_type: json
+  data:
+    - user_id
+    - nickname
+    - tenant_id
+    - cur_user_id
+#修改角色
+update_member_role:
+  address: /api/admin/member/role
+  method: put
+  body_type: json
+  data:
+    - role_name
+    - ids: [ ]
+    - tenant_id
+    - cur_user_id
+#角色列表
+member_role_list:
+  address: /api/admin/member/role
+  method: get
+  body_type: form-data
+  data:
+    - tenant_id
+    - cur_user_id
+#生成邀请链接
+invite_member:
+  address: /api/sharesvc/link
+  method: post
+  body_type: json
+  data:
+    - tenant_id
+
+#通过手机号和邮箱发送邀请
+invite_revoke:
+  address: /api/admin/invite/revoke
+  method: post
+  body_type: json
+  data:
+    - ids: [ ]
+    - tenant_id
+    - cur_user_id
+#批量重发邀请
+invite_resend:
+  address: /api/admin/invite/resend
+  method: post
+  body_type: json
+  data:
+    - ids: [ ]
+    - tenant_id
+    - cur_user_id
+
+#审批列表
+invite_list:
+  address: /api/admin/invite/list
+  method: get
+  body_type: form-data
+  data:
+    - page_no
+    - page_size
+    - tenant_id
+    - keyword
+    - type
+    - total
+    - cur_user_id
+#批量同意
+invite_agree:
+  address: /api/admin/invite/agree
+  method: post
+  body_type: json
+  data:
+    - ids: [ ]
+    - tenant_id
+    - cur_user_id
+#批量拒绝
+invite_deny:
+  address: /api/admin/invite/deny
+  method: post
+  body_type: json
+  data:
+    - ids: [ ]
+    - reject_msg
+    - tenant_id
+    - cur_user_id
+
+# 点击邀请链接-解析邀请链接
+resolve_link:
+  address: /api/share/url/resolve
+  method: post
+  body_type: json
+  data:
+    - short_id
+
+
+# 移出团队
+member_resign:
+  address: /api/admin/member/resign
+  method: post
+  body_type: json
+  data:
+    - team_id
+    - user_id
+    - cur_user_id
+
+#安全设置
+#获取水印
+get_watermark:
+  address: /api/admin/tenant_setting/watermark
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+    - cur_user_id
+put_watermark:
+  address: /api/admin/tenant_setting/watermark
+  method: put
+  body_type: json
+  data:
+    - tenant_id
+    - cur_user_id
+    - state   #1开 0关
+
+# 获取团队 SAML 设置
+get_saml:
+  address: /api/admin/tenant_setting/saml
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+    - cur_user_id
+
+# 获取 SAML 开关状态
+get_switch_saml:
+  address: /api/admin/tenant_setting/saml_switch
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+    - cur_user_id
+
+quit_tenant:
+  address: /api/admin/member_setting/quit_tenant
+  method: post
+  body_type: url-encode

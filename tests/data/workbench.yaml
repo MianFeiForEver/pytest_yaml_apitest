@@ -1,0 +1,1032 @@
+#新的项目列表页面用例信息
+
+# 项目列表页面获取相关信息
+#获取所有文件
+workbench_get_files:
+  - api_name: workbench_get_file_list
+    info: 获取团队内所有文件
+    data: { tenantId: $<team_id>, parentId: 0 }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_get_file_list
+    info: 获取团队内文件夹&项目
+    data: { tenantId: $<team_id>, parentId: 0, sourceType: [ folder, dc_prj ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+guide:
+  - api_name: guide
+    info: guide
+    data: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: guide
+    info: guide
+    data: { team_id: $<team_id> }
+    cookies: false
+    get:
+      team_id: team_id
+    assertion:
+      code: 30001
+#获取广场模版
+workbench_get_templates:
+  - api_name: workbench_template_suggest
+    info: 获取团队广场的模版
+    data: { tenantId: $<team_id> }
+    get:
+      team_id: team_id
+    set:
+      doc_templateId:
+        - $..data[?(@.sourceType=="ts_single_doc")]..params
+        - $.templateId
+      board_templateId:
+        - $..data[?(@.sourceType=="board")]..params
+        - $.templateId
+      board_templateName:
+        - $..data[?(@.sourceType=="board")]
+        - $.name
+    assertion:
+      code: 0
+      data: exist
+
+#获取该用户在该团队的权限点
+workbench_get_permission:
+  - api_name: workbench_permission_tenant
+    info: 获取该团队的权限点
+    data: { tenantId: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+      data.permission_mode: exist
+      data.seats: exist
+      data.invite_perm: exist
+      data.operations: exist
+      data.tenant_code: exist
+
+# 获取设计规范信息
+workbench_dsm_standards_list:
+  - api_name: workbench_dsm_list
+    info: 获取设计规范信息
+    data: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: '00000'
+      msg: Success
+
+#获取团队信息
+workbench_get_team_infos:
+  - api_name: workbench_team_detail
+    info: 获取团队信息
+    data: { team_id: $<team_id>, is_service: true }
+    get:
+      team_id: team_id
+    assertion:
+      code: '00000'
+      result.team_id: exist
+
+#创建文件夹相关校验
+workbench_create_folder:
+  - api_name: workbench_file_add
+    info: 新建文件夹
+    data: { tenantId: $<team_id>, sourceType: folder, sourceName: 接口自动化_zx_文件夹, parentId: 0,
+            orderIndex: 15067500, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_folder_id: $.data.id
+      workbench_folder_name: $.data.sourceName
+    assertion:
+      code: 0
+      data.sourceName: 接口自动化_zx_文件夹
+workbench_create_folder_xfail:
+  - api_name: workbench_file_add
+    info: 重复创建新建文件夹
+    data: { tenantId: $<team_id>, sourceType: folder, sourceName: 接口自动化_zx_文件夹, parentId: 0,
+            orderIndex: 15067500, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    assertion:
+      code: 13005
+  - api_name: workbench_file_add
+    info: 创建文件夹参数校验-sourceType为空
+    data: { tenantId: $<team_id>, sourceName: 接口自动化_zx_文件夹, parentId: 0, orderIndex: 15067500,
+            userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    assertion:
+      code: 40000
+  - api_name: workbench_file_add
+    info: 创建文件夹参数校验-teamid为空
+    data: { sourceType: folder, sourceName: 接口自动化_zx_文件夹, parentId: 0, orderIndex: 15067500 }
+    assertion:
+      code: 40000
+
+
+#对文件夹进行操作
+# 重命名文件夹
+workbench_rename_folder:
+  - api_name: workbench_file_rename
+    info: 重命名文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id>, newName: 接口自动化_zx_文件夹_重命名done }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_rename
+    info: 重命名文件夹失败-newname为空
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 40000
+  - api_name: workbench_file_rename
+    info: 重命名文件夹失败-目标文件夹为空
+    data: { tenantId: $<team_id>, newName: 接口自动化_zx_项目_重命名done }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+# 文件夹设置封面
+workbench_setcover_folder:
+  - api_name: workbench_setcover
+    info: 文件夹设置封面
+    data: { tenantId: $<team_id>,id: $<workbench_folder_id>,url: "https://devcdn.lanhuapp.com/cover/Lv8JWZ3rDs9BNEZEeFdjPh" }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_setcover
+    info: 文件夹设置封面-图片缺失
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 40000
+
+#删除文件夹
+workbench_del_folder:
+  - api_name: workbench_file_del
+    info: 删除文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+workbench_del_folder_xfail:
+  - api_name: workbench_file_del
+    info: 重复删除文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 13007
+
+
+#对文件夹进行移动
+workbench_move_folder:
+  - api_name: workbench_file_add
+    info: 新建文件夹2
+    data: { tenantId: $<team_id>, sourceType: folder, sourceName: 被移动到此文件夹中, parentId: 0,
+            orderIndex: 15067500, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_r_folder_id: $.data.id
+    assertion:
+      code: 0
+  - api_name: workbench_file_move
+    info: 文件夹1移动到文件夹2-move
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id>, newParentId: $<workbench_r_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+      workbench_r_folder_id: workbench_r_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_sort
+    info: 文件夹1移动到文件夹2-sort
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_move
+    info: 被移动的文件夹参数缺失
+    data: { tenantId: $<team_id>, newParentId: $<workbench_r_folder_id> }
+    get:
+      team_id: team_id
+      workbench_r_folder_id: workbench_r_folder_id
+    assertion:
+      code: 40000
+
+
+#获取文件夹的三个点操作
+workbench_folder_options:
+  - api_name: workbench_file_options
+    info: 获取文件夹的三个点操作
+    data: { tenantId: $<team_id>, id: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+      data: exist
+  - api_name: workbench_file_options
+    info: 文件夹id参数缺失
+    data: { tenantId: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+
+#创建项目相关校验
+workbench_add_project:
+  - api_name: workbench_file_add
+    info: 新建项目
+    data: { tenantId: $<team_id>, sourceType: dc_prj, sourceName: 接口自动化_zx_项目, parentId: 0,
+            extend: { prjType: mobile, addUsers: [ ] }, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_project_id: $.data.id
+    assertion:
+      code: 0
+  #      data.sourceName: 接口自动化_zx_项目
+
+#创建项目相关校验
+workbench_add_project_xfail:
+
+  - api_name: workbench_file_add
+    info: 创建项目参数校验-sourceType为空
+    data: { tenantId: $<team_id>, sourceName: 接口自动化_zx_项目, parentId: 0, extend: { prjType: mobile,
+                                                                                         addUsers: [ ] }, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    assertion:
+      code: 40000
+  - api_name: workbench_file_add
+    info: 创建文件夹参数校验-teamid为空
+    data: { sourceType: dc_prj, sourceName: 接口自动化_zx_项目, parentId: 0, orderIndex: 15067500 }
+    assertion:
+      code: 40000
+
+#获取项目的的三个点操作
+workbench_project_options:
+  - api_name: workbench_file_options
+    info: 获取项目的三个点操作
+    data: { tenantId: $<team_id>, id: $<workbench_project_id> }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+    assertion:
+      code: 0
+      data: exist
+  - api_name: workbench_file_options
+    info: 项目id参数缺失
+    data: { tenantId: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+# 重命名项目
+workbench_rename_project:
+  - api_name: workbench_file_rename
+    info: 重命名项目
+    data: { tenantId: $<team_id>, id: $<workbench_project_id>, newName: 设计项目重命名done }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_rename
+    info: 重命名项目失败-newname为空
+    data: { tenantId: $<team_id>, id: $<workbench_project_id> }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+    assertion:
+      code: 40000
+  - api_name: workbench_file_rename
+    info: 重命名项目失败-目标项目为空
+    data: { tenantId: $<team_id>, newName: 设计项目重命名done }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+
+#将项目移动到文件夹
+workbench_move_project:
+  - api_name: workbench_file_move
+    info: 将项目移动到新建的文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_project_id>, newParentId: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_move
+    info: 被移动的文件夹参数缺失
+    data: { tenantId: $<team_id>, newParentId: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 40000
+
+#删除项目
+workbench_del_project:
+  - api_name: workbench_file_del
+    info: 删除项目
+    data: { tenantId: $<team_id>, id: $<workbench_project_id> }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+    assertion:
+      code: 0
+workbench_del_project_xfail:
+  - api_name: workbench_file_del
+    info: 重复删除项目
+    data: { tenantId: $<team_id>, id: $<workbench_project_id> }
+    get:
+      team_id: team_id
+      workbench_project_id: workbench_project_id
+    assertion:
+      code: 13007
+
+trash_list_project:
+  - api_name: trash_list
+    info: 回收站搜索项目
+    data: { team_id: $<team_id>, keyword: 设计项目重命名done }
+    authorization: true
+    get:
+      team_id: team_id
+      project_newName: workbench_project_newName
+    set:
+      delete_project_id: $.data.items[0].id
+    assertion:
+      code: '00000'
+      data.items[0].resource_name: 设计项目重命名done
+
+# 恢复项目
+trash_recover_project:
+  - api_name: trash_recover
+    info: 还原项目
+    data: { id: $<delete_project_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      delete_project_id: delete_project_id
+      team_id: team_id
+    assertion:
+      code: '00029'
+      msg: 消息发送成功
+
+# 获取还原项目结果
+get_trash_recover_project:
+  - api_name: get_trash_recover
+    info: 获取还原项目结果
+    data: { id: $<delete_project_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      delete_project_id: delete_project_id
+      team_id: team_id
+    assertion:
+      code: '00000'
+      msg: SUCCESS
+
+#创建空白离散文档文档
+workbench_create_doc_empty:
+  - api_name: workbench_file_add
+    info: 新建空白离散文档
+    data: { tenantId: $<team_id>, sourceType: ts_single_doc, sourceName: '', parentId: 0,
+            userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_doc_id_empty: $.data.id
+      workbench_ydoc_id: $.data.sourceId
+    assertion:
+      code: 0
+workbench_create_doc_empty_xfail:
+  - api_name: workbench_file_add
+    info: 创建文档参数校验-sourceType为空
+    data: { tenantId: $<team_id>, sourceName: '', parentId: 0, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    assertion:
+      code: 40000
+  - api_name: workbench_file_add
+    info: 创建文档参数校验-teamid为空
+    data: { sourceType: ts_single_doc, sourceName: 接口自动化_zx_项目, parentId: 0 }
+    assertion:
+      code: 40000
+
+#主页广场模版创建
+workbench_create_doc_template:
+  - api_name: workbench_file_add
+    info: 使用主页广场模版创建
+    data: { tenantId: $<team_id>, sourceType: ts_single_doc, sourceName: '', parentId: 0,
+            extend: { templateId: $<doc_templateId> }, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+      doc_templateId: doc_templateId
+    set:
+      workbench_doc_id_template: $.data.id
+    assertion:
+      code: 0
+
+
+#获取离散文档的的三个点操作
+workbench_doc_options:
+  - api_name: workbench_file_options
+    info: 获取离散文档的三个点操作
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty> }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+    assertion:
+      code: 0
+      data: exist
+  - api_name: workbench_file_options
+    info: 离散文档id参数缺失
+    data: { tenantId: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+# 重命名离散文档
+workbench_rename_doc:
+  - api_name: workbench_file_rename
+    info: 重命名离散文档
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty>, newName: 离散文档重命名done }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+    assertion:
+      code: 0
+  - api_name: workbench_file_rename
+    info: 重命名离散文档-newname为空
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty> }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+    assertion:
+      code: 40000
+  - api_name: workbench_file_rename
+    info: 重命名项目失败-目标项目为空
+    data: { tenantId: $<team_id>, newName: 离散文档重命名done }
+    get:
+      team_id: team_id
+    assertion:
+      code: 40000
+
+#将文档移动到文件夹
+workbench_move_doc:
+  - api_name: workbench_file_move
+    info: 将离散文档移动到新建的文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty>, newParentId: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+  - api_name: workbench_file_move
+    info: 被移动的文件夹参数缺失
+    data: { tenantId: $<team_id>, newParentId: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 40000
+
+#删除空白离散文档&广场创建离散文档
+workbench_del_doc:
+  - api_name: workbench_file_del
+    info: 删除空白离散文档
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty> }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+    assertion:
+      code: 0
+workbench_del_doc_xfail:
+  - api_name: workbench_file_del
+    info: 重复删除空白离散文档
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_empty> }
+    get:
+      team_id: team_id
+      workbench_doc_id_empty: workbench_doc_id_empty
+    assertion:
+      code: 13007
+  - api_name: workbench_file_del
+    info: 删除广场模版创建的离散文档
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_template> }
+    get:
+      team_id: team_id
+      workbench_doc_id_template: workbench_doc_id_template
+    assertion:
+      code: 0
+  - api_name: workbench_file_del
+    info: 重复删除广场模版创建的离散文档
+    data: { tenantId: $<team_id>, id: $<workbench_doc_id_template> }
+    get:
+      team_id: team_id
+      workbench_doc_id_template: workbench_doc_id_template
+    assertion:
+      code: 13007
+
+trash_list_ts:
+  - api_name: trash_list
+    info: 回收站搜索TS文档
+    data: { team_id: $<team_id>, keyword: 离散文档重命名done }
+    authorization: true
+    get:
+      team_id: team_id
+    set:
+      delete_doc_id: $.data.items[0].id
+    assertion:
+      code: '00000'
+      data.items[0].resource_name: 离散文档重命名done
+
+trash_recover_ts:
+  - api_name: trash_recover
+    info: 还原TS文档
+    data: { id: $<delete_doc_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      team_id: team_id
+      delete_doc_id: delete_doc_id
+    assertion:
+      code: '00029'
+      msg: 消息发送成功
+
+get_trash_recover_ts:
+  - api_name: get_trash_recover
+    info: 获取还原TS文档结果
+    data: { id: $<trash_doc_source_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      trash_doc_source_id: delete_doc_id
+      team_id: team_id
+    assertion:
+      code: '00000'
+      msg: SUCCESS
+
+#进入ts后 使用离散文档下方推荐的模版创建文档
+ts_create_doc_independent:
+  - api_name: workbench_file_add
+    info: 新建空白离散文档
+    data: { tenantId: $<team_id>, sourceType: ts_single_doc, sourceName: '', parentId: 0,
+            userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_doc_id_empty1: $.data.id
+      workbench_ydoc_id1: $.data.sourceId
+      workbench_ydoc_name: $.data.sourceName
+    assertion:
+      code: 0
+  - api_name: get_ts_single_doc
+    info: 获取离散文档的信息
+    data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+    assertion:
+      code: 0
+  - api_name: get_ts_single_recommend
+    info: 获取离散文档空白文档下方的推荐模版
+    data: { team_id: $<team_id> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    set:
+      recommend_template_id: $.result[0].template_id
+      recommend_ydoc_icon: $.result[0].icon
+      recommend_ydoc_title: $.result[0].title
+    assertion:
+      code: 0
+  - api_name: put_ts_single_recommend
+    info: 将下方的推荐模版填充到文档，进行覆盖创建
+    data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
+            ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      recommend_template_id: recommend_template_id
+      recommend_ydoc_icon: recommend_ydoc_icon
+      recommend_ydoc_title: recommend_ydoc_title
+    assertion:
+      code: 0
+  - api_name: put_ts_single_recommend
+    info: 将下方的推荐模版填充到文档，进行覆盖创建,参数校验team_id缺失
+    data: { ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>, ydoc_id: $<workbench_ydoc_id1>,
+            ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      recommend_template_id: recommend_template_id
+      recommend_ydoc_icon: recommend_ydoc_icon
+      recommend_ydoc_title: recommend_ydoc_title
+    assertion:
+      code: 0
+  - api_name: put_ts_single_recommend
+    info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-ydoc_id缺失
+    data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
+            ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      recommend_template_id: recommend_template_id
+      recommend_ydoc_icon: recommend_ydoc_icon
+      recommend_ydoc_title: recommend_ydoc_title
+    assertion:
+      code: 4
+    status: 400
+  - api_name: put_ts_single_recommend
+    info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-template_id缺失
+    data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
+            ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      recommend_ydoc_icon: recommend_ydoc_icon
+      recommend_ydoc_title: recommend_ydoc_title
+    assertion:
+      code: 4
+    status: 400
+  - api_name: put_ts_single_recommend
+    info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-template_id异常
+    data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
+            ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon>, template_id: 2b2128f9-fdfb-43e6-8395 }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      recommend_ydoc_icon: recommend_ydoc_icon
+      recommend_ydoc_title: recommend_ydoc_title
+    assertion:
+      code: 4
+    status: 400
+
+#进入ts后 在离散文档内部对文档进行操作
+ts_doc_independent_option:
+  - api_name: rename_ts_single_doc
+    info: ts内部对文档重命名
+    data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1>, ydoc_title: ts内部推荐模版离散文档-重命名done,
+            ydoc_icon: 1f618 }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+    assertion:
+      code: 0
+  - api_name: rename_ts_single_doc
+    info: ts内部对文档重命名，参数校验-ydocid缺失
+    data: { team_id: $<team_id>, ydoc_title: ts内部离散文档重命名, ydoc_icon: 1f618 }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 4
+    status: 400
+  - api_name: del_ts_single_doc
+    info: ts内部删除文档
+    data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+    assertion:
+      code: 0
+  - api_name: del_ts_single_doc
+    info: ts内部删除文档，参数校验-ydocid缺失
+    data: { team_id: $<team_id> }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 4
+    status: 400
+
+#创建思维云图
+workbench_create_board:
+  - api_name: workbench_file_add
+    info: 新建云图
+    data: { tenantId: $<team_id>, sourceType: board, sourceName: '', parentId: 0, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+    set:
+      workbench_board_id: $.data.id
+      workbench_board_source_id: $.data.sourceId
+    assertion:
+      code: 0
+
+# 主页广场模版创建思维云图
+workbench_create_board_template:
+  - api_name: workbench_file_add
+    info: 使用主页广场模版创建云图
+    data: { tenantId: $<team_id>, sourceType: board, sourceName: $<board_templateName>,
+            parentId: 0, extend: { templateId: $<board_templateId> }, userId: $<uid> }
+    get:
+      uid: uid
+      team_id: team_id
+      board_templateId: board_templateId
+      board_templateName: board_templateName
+    set:
+      workbench_board_id_template: $.data.id
+    assertion:
+      code: 0
+      msg: success
+
+#获取思维云图的三个点操作
+workbench_board_options:
+  - api_name: workbench_file_options
+    info: 获取思维云图的三个点操作
+    data: { tenantId: $<team_id>, id: $<workbench_board_id> }
+    get:
+      team_id: team_id
+      workbench_board_id: workbench_board_id
+    assertion:
+      code: 0
+      data: exist
+
+# 重命名思维云图
+workbench_rename_board:
+  - api_name: workbench_file_rename
+    info: 重命名思维云图
+    data: { tenantId: $<team_id>, id: $<workbench_board_id>, newName: 思维云图重命名done }
+    get:
+      team_id: team_id
+      workbench_board_id: workbench_board_id
+    assertion:
+      code: 0
+      msg: success
+
+#将思维云图移动到文件夹
+workbench_move_board:
+  - api_name: workbench_file_move
+    info: 将思维云图移动到新建的文件夹
+    data: { tenantId: $<team_id>, id: $<workbench_board_id>, newParentId: $<workbench_folder_id> }
+    get:
+      team_id: team_id
+      workbench_board_id: workbench_board_id
+      workbench_folder_id: workbench_folder_id
+    assertion:
+      code: 0
+      msg: success
+
+#删除新建思维云图 和 广场模版创建的思维云图
+workbench_del_board:
+  - api_name: workbench_file_del
+    info: 删除新建思维云图
+    data: { tenantId: $<team_id>, id: $<workbench_board_id> }
+    get:
+      team_id: team_id
+      workbench_board_id: workbench_board_id
+    assertion:
+      code: 0
+      msg: success
+  - api_name: workbench_file_del
+    info: 删除广场模版创建的思维云图
+    data: { tenantId: $<team_id>, id: $<workbench_board_id> }
+    get:
+      team_id: team_id
+      workbench_board_id: workbench_board_id_template
+    assertion:
+      code: 0
+      msg: success
+
+# 回收站还原思维云图
+trash_list_board:
+  - api_name: trash_list
+    info: 搜索思维云图
+    data: { team_id: $<team_id>, keyword: 思维云图重命名done }
+    authorization: true
+    get:
+      team_id: team_id
+    set:
+      delete_board_id: $.data.items[0].id
+    assertion:
+      code: '00000'
+      data.items[0].resource_name: 思维云图重命名done
+
+trash_recover_board:
+  - api_name: trash_recover
+    info: 还原思维云图
+    data: { id: $<delete_board_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      team_id: team_id
+      delete_board_id: delete_board_id
+    assertion:
+      code: '00029'
+      msg: 消息发送成功
+
+get_trash_recover_board:
+  - api_name: get_trash_recover
+    info: 获取还原思维云图结果
+    data: { id: $<trash_board_source_id>, user_id: $<uid>, team_id: $<team_id> }
+    authorization: true
+    get:
+      uid: uid
+      trash_board_source_id: delete_board_id
+      team_id: team_id
+    assertion:
+      code: '00000'
+      msg: SUCCESS
+
+#搜索
+workbench_search:
+  - api_name: workbench_search
+    info: 搜索默认推荐
+    data: { tenantId: $<team_id>, sourceType: [ dc_prj, ts_single_doc, folder, dc_prj_image,
+                                                dc_prj_prd ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_search
+    info: 搜索默认推荐-参数校验teamid缺失
+    data: { sourceType: [ dc_prj, ts_single_doc, folder, dc_prj_image, dc_prj_prd ] }
+    assertion:
+      code: 40000
+  - api_name: workbench_search
+    info: 关键词搜索-搜索全部内容
+    data: { tenantId: $<team_id>, keyword: 重命名, sourceType: [ dc_prj, ts_single_doc,
+                                                                 folder, dc_prj_image, dc_prj_prd ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_search
+    info: 关键词搜索-搜索项目
+    data: { tenantId: $<team_id>, keyword: 重命名, sourceType: [ dc_prj ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_search
+    info: 关键词搜索-搜索离散文档
+    data: { tenantId: $<team_id>, keyword: 重命名, sourceType: [ ts_single_doc ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_search
+    info: 关键词搜索-搜索思维云图
+    data: { tenantId: $<team_id>, keyword: 思维云图_重命名, sourceType: [ board ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+  - api_name: workbench_search
+    info: 关键词搜索-搜索文件夹
+    data: { tenantId: $<team_id>, keyword: 重命名, sourceType: [ folder ] }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+
+# 列表页进入ts时外部获取短ID映射
+workbench_ts_outer_short_id:
+  - api_name: ts_outer_short_id
+    info: 列表页进入ts时外部获取短ID映射
+    data: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+    assertion:
+      code: 0
+      msg: 成功
+
+# ts文档给用户授权
+workbench_ts_doc_permission:
+  - api_name: ts_permission_search
+    info: 搜索一个用户
+    data: { team_id: $<team_id>, keyword: 781929291@qq.com, mix: 'department,user,project',
+            page_num: 1, page_size: 20 }
+    get:
+      team_id: team_id
+    params: { team_id: $<team_id> }
+    set:
+      ts_user_id: $.result.records[0].user_id
+    assertion:
+      code: 0
+      result: exit
+      total: 1
+  - api_name: ts_permission_search
+    info: 搜索一个用户-缺少搜索类型
+    data: { team_id: $<team_id>, keyword: 781929291@qq.com, page_num: 1, page_size: 20 }
+    get:
+      team_id: team_id
+    params: { team_id: $<team_id> }
+    assertion:
+      code: 302
+  - api_name: ts_post_permission
+    info: 给该用户授权
+    data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, actions: '1,4,6,90004',
+            target_list: [ { target_id: $<ts_user_id>, target_type: 1 } ] }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      ts_user_id: ts_user_id
+    assertion:
+      code: 0
+      result.success_list: exit
+  - api_name: ts_post_permission
+    info: 给该用户授权-重复授权，授权失败
+    data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, actions: '1,4,6,90004',
+            target_list: [ { target_id: $<ts_user_id>, target_type: 1 } ] }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      ts_user_id: ts_user_id
+    assertion:
+      code: 202
+  - api_name: ts_del_permission
+    info: 清理数据-移除授权的用户
+    data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, from_actions: '1,4,6,90004',
+            target_id: $<ts_user_id>, target_type: 1 }
+    params: { team_id: $<team_id> }
+    get:
+      team_id: team_id
+      workbench_ydoc_id1: workbench_ydoc_id1
+      ts_user_id: ts_user_id
+    assertion:
+      code: 0
+      result.success_list: exit
+
+# 查看ts相关的消息
+workbench_ts_msg:
+  - api_name: get_ts_msg_template
+    info: 查看ts的消息通知模版
+    assertion:
+      code: '00000'
+  - api_name: get_ts_msg_list
+    info: 查看ts的消息列表-未读消息
+    data: { tenant_id: $<team_id>, source_type: ts, state: unread, about_me: false }
+    get:
+      team_id: team_id
+    assertion:
+      code: '00000'
+  - api_name: get_ts_msg_list
+    info: 查看ts的消息列表-关于我的未读消息
+    data: { tenant_id: $<team_id>, source_type: ts, state: unread, about_me: true }
+    get:
+      team_id: team_id
+    assertion:
+      code: '00000'
+  - api_name: get_ts_msg_list
+    info: 查看ts的消息列表-已读消息
+    data: { tenant_id: $<team_id>, source_type: ts, state: history, about_me: false }
+    get:
+      team_id: team_id
+    assertion:
+      code: '00000'
+  - api_name: get_ts_msg_list
+    info: 查看ts的消息列表-关于我的已读消息
+    data: { tenant_id: $<team_id>, source_type: ts, state: history, about_me: true }
+    get:
+      team_id: team_id

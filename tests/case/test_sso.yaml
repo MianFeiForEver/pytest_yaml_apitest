@@ -1,0 +1,22 @@
+test_check_email:
+  title: 检测邮箱是否注册
+test_login:
+  title: 登录流程
+  depends:
+    name: login
+test_is_auth:
+  title: 校验是否登录
+  depends:
+    name: is_auth
+test_logout:
+  title: 退出登录
+  depends:
+    depends_on:
+      - login
+test_email_register:
+  title: 邮箱注册
+
+test_send_email_reset_password:
+  title: 忘记密码发送邮件
+#test_email_reset_password:
+#  title: 邮件重置密码
