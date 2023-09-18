@@ -1,0 +1,132 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+#创建文件夹
+create_folder:
+  address: /api/project/folder
+  method: post
+  body_type: json
+  data:
+    - name
+    - order_index
+    - team_id
+#重命名文件夹
+rename_folder:
+  address: /api/project/folder
+  method: put
+  body_type: json
+  data:
+    - name
+    - order_index
+    - team_id
+
+get_folder:
+  address: /api/project/folder
+  method: get
+  body_type: json
+  data:
+    - folder_id
+    - team_id
+del_folder:
+  address: /api/project/folder
+  method: delete
+  body_type: json
+  data:
+    - folder_id
+    - team_id
+folder_projects:
+  address: /api/account/folder_projects
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
+project_usernames:
+  address: /api/account/project_usernames
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
+one_folder_projects:
+  address: /api/project/one_folder_projects
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - folder_id
+#全局搜索
+search:
+  address: /api/global/search
+  method: get
+  body_type: url-encode
+  data:
+    - team_id
+    - type
+    - keyword
+    - sort
+    - pageNo
+    - pageSize
+#获取用户弹窗信息
+user_pop_up:
+  address: /api/account/user_pop_up
+  method: get
+  body_type: json
+  data:
+    - sub_group: version_compare
+
+#更新用户弹窗信息
+put_user_pop_up:
+  address: /api/account/user_pop_up
+  method: put
+  body_type: json
+  data:
+    - sub_group: version_compare
+    - read
+#dsm
+dsm_project:
+  project: dsm
+  address: /api/dsm/standards/list
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+
+#ws_admin
+cximage_recovery:
+  address: /api/project/image_recovery
+  method: put
+  body_type: json
+  data:
+    - project_id
+    - images: [ ]
+
+# sketch插件上传设计图
+sketch_upload_img:
+  address: /api/project/image
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - team_id
+    - new_image_cnt
+    - ext_for
+    - dest_app
+    - ext_version
+    - params: { }
+    - images: [ ]
+
+# 删除sketch上传的设计图图片版本
+del_sketch_upload_img:
+  address: /api/project/version
+  method: delete
+  body_type: json
+  data:
+    - version_id

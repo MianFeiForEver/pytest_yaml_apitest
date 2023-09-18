@@ -160,7 +160,6 @@ email_register:
     get:
       email: test_email
       password: test_password
-
     assertion:
       code: '00000'
       msg: Success

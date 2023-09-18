@@ -8,21 +8,6 @@
 #  body_type:
 
 
-# 校验验证码接口：邮箱绑定接口
-#email_bind:
-#  address: /passport/api/verify_email_bind
-#  method: post
-#  body_type: json
-#  data:
-#    - email
-#    - code
-
-
-
-#登出
-
-
-
 put_userinfo:
   address: /api/account/userinfo
   method: put

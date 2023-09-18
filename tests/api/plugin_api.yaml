@@ -1,0 +1,80 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+#插件
+#已登录用户存储token
+store_token:
+  address: /api/account/store_token
+  method: post
+  body_type: json
+
+#获取登录的token
+get_login_token:
+  address: /api/account/get_login_token
+  method: get
+  body_type: json
+
+#插件登录
+plugin_login:
+  address: /api/account/login
+  method: get
+  body_type: json
+
+
+#获取插件动态提示
+plugin_tips:
+  address: /api/project/plugin_tips
+  method: get
+  body_type: json
+
+
+#获取用户信息
+plugin_user_info:
+  address: /api/account/userinfo
+  method: get
+  body_type: json
+
+
+#插件_用户所在团队
+plugin_user_teams:
+  address: /api/account/plugin_user_teams
+  method: get
+  body_type: json
+
+#插件_项目
+plugin_projects:
+  address: /api/account/user_projects
+  method: get
+  body_type: json
+#插件_获取文件夹
+plugin_folder:
+  address: /api/project/folder
+  method: get
+  body_type: json
+#插件_文件夹项目
+plugin_folder_projects:
+  address: /api/account/folder_projects
+  method: get
+  body_type: json
+project_info:
+  address: /api/project/project_info
+  method: post
+  body_type: json
+#插件_项目分组
+plugin_project_sectors:
+  address: /api/project/project_sectors
+  method: get
+  body_type: json
+
+
+#插件上传异常状态提示
+plugin_err_status: #插件上传异常状态提示
+  address: /api/account/plugin_err_status
+  method: get
+  body_type: json

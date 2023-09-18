@@ -110,8 +110,8 @@ def send_request(args):
     # 断言请求返回码
     if client.check_code_assertion(value):
         pass
-    # 保存请求结果中的值
-    asyncio.run(save_values(need_set, client))
+        # 保存请求结果中的值
+        asyncio.run(save_values(need_set, client))
 
 
 def function_fixture(fixtures) -> list:
@@ -124,17 +124,20 @@ def function_fixture(fixtures) -> list:
 
 
 def create_test_function(name, func, fixture, depends):
+    depends_info = {}
     depends_name = depends.get("name")
-    depends = depends.get("depends_on", [])
+    depends_on = depends.get("depends_on", [])
+    if depends_name: depends_info["name"] = depends_name
+    if depends_on: depends_info["depends"] = depends_on
 
     # scope = depends.get("scope", "module")
 
-    @pytest.mark.dependency(name=depends_name, depends=depends)
+    @pytest.mark.dependency(**depends_info)
     def test_function(**kwargs):
         func(kwargs)
 
-    test_function.__signature__ = Signature(fixture)
-    test_function.__name__ = name
+    setattr(test_function, "__signature__", Signature(fixture))
+    setattr(test_function, '__name__', name)
     return test_function
 
 

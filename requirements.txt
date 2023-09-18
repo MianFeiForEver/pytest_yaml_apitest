@@ -36,3 +36,4 @@ Allure-pytest
 loguru~=0.7.0
 requests_toolbelt
 pytest-dependency
+jmespath

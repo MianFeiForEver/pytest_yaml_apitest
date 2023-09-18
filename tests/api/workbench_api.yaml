@@ -1,0 +1,304 @@
+#新的项目列表页面相关接口
+
+#搜索接口
+workbench_search:
+  address: /workbench/api/workbench/abstractfile/search
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - keyword
+    - sourceType
+
+#获取团队信息
+workbench_team_detail:
+  address: /api/account/team/detail
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - is_service
+
+#获取文件夹列表
+workbench_get_file_list:
+  address: /workbench/api/workbench/abstractfile/list
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - parentId
+    - sourceType
+
+#获取用户权限点
+workbench_permission_tenant:
+  address: /workbench/api/workbench/permission/tenant
+  method: post
+  body_type: json
+  data:
+    - tenantId
+
+# 获取设计规范
+workbench_dsm_list:
+  address: /api/dsm/standards/list
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+#获取广场模版推荐列表
+workbench_template_suggest:
+  address: /workbench/api/workbench/template/suggest
+  method: get
+  body_type: json
+  data: tenantId
+
+#创建各类文件
+workbench_file_add:
+  address: /workbench/api/workbench/abstractfile/add
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - parentId
+    - sourceType
+    - sourceName
+    - extend
+
+#删除各类文件
+workbench_file_del:
+  address: /workbench/api/workbench/abstractfile/del
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+
+
+#移动文件到文件夹
+workbench_file_move:
+  address: /workbench/api/workbench/abstractfile/move
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - newParentId
+
+#对文件移动排序
+workbench_file_sort:
+  address: /workbench/api/workbench/abstractfile/sort
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - orderIndex
+    - beforeId
+
+#重命名文件
+workbench_file_rename:
+  address: /workbench/api/workbench/abstractfile/rename
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - newName
+
+#获取文件操作菜单
+workbench_file_options:
+  address: /workbench/api/workbench/abstractfile/options
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+
+#获取用户所在的项目列表
+workbench_userfiles:
+  address: /workbench/api/workbench/abstractfile/userinfiles
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - parentId
+    - sourceType
+
+#获取用户信息卡片
+workbench_uesrinfo:
+  address: /workbench/api/workbench/user/userinfo
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - uids
+
+#移动项目到团队前进行校验
+workbench_movecheck:
+  address: /workbench/api/workbench/abstractfile/movecheck
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - newParentId
+    - newTenantId
+    - checkType
+
+#移动到团队
+workbench_movetoteam:
+  address: /workbench/api/workbench/abstractfile/movetoteam
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - newParentId
+    - newTenantId
+
+#合并团队
+workbench_hasfile:
+  address: /workbench/api/workbench/abstractfile/hasfile
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - sourceType
+
+
+#获取文件全路径
+workbench_get_filepath:
+  address: /workbench/api/workbench/abstractfile/filepath
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - sourceId
+
+
+#获取项目链接
+workbench_get_itemurl:
+  address: /api/workbench/abstractfile/itemurl
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - sourceId
+
+#设置文件封面
+workbench_setcover:
+  address: /workbench/api/workbench/abstractfile/setcover
+  method: post
+  body_type: json
+  data:
+    - tenantId
+    - id
+    - url
+
+#获取离散文档信息
+get_ts_single_doc:
+  address: /api/ts-mars/v1/independent_doc?team_id=${team_id}
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+#重命名离散文档
+rename_ts_single_doc:
+  address: /api/ts-mars/v1/independent_doc?team_id=${team_id}
+  method: put
+  body_type: json
+  data:
+    - team_id
+    - update_time
+    - ydoc_id
+    - ydoc_icon
+    - ydoc_title
+
+#删除离散文档
+del_ts_single_doc:
+  address: /api/ts-mars/v1/independent_doc?team_id=${team_id}
+  method: delete
+  body_type: json
+  data:
+    - team_id
+    - ydoc_id
+
+#获取离散文档推荐模版
+get_ts_single_recommend:
+  address: /api/ts-mars/v1/template/recommend?team_id=${team_id}
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+#将离散文档下方模版，填充到文档（使用推荐模版创建）
+put_ts_single_recommend:
+  address: /api/ts-mars/v1/template/recommend?team_id=${team_id}
+  method: post
+  body_type: json
+  data:
+    - team_id
+    - template_id
+    - ydoc_icon
+    - ydoc_id
+    - ydoc_title
+    - ydoc_type
+
+# ts消息模版
+get_ts_msg_template:
+  address: /api/msg_center/server/templates
+  method: get
+
+# ts消息列表
+get_ts_msg_list:
+  address: /api/msg_center/server/msg_list
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+    - about_me
+    - source_type
+    - state
+
+# 列表页进入ts文档时外部获取短ID映射
+ts_outer_short_id:
+  address: /api/ts-mars/v1/outer_short_id
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+# ts文档给用户授权前搜索用户id
+ts_permission_search:
+  address: /api/ts-mars/v1/search?team_id=${team_id}
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+#给用户授权
+ts_post_permission:
+  address: /api/ts-mars/v1/permission?team_id=${team_id}
+  method: post
+  body_type: json
+  data:
+    - actions
+    - resource_id
+    - target_list
+    - team_id
+    - workspace_id
+
+#移除授权用户
+ts_del_permission:
+  address: /api/ts-mars/v1/permission?team_id=${team_id}
+  method: delete
+  body_type: json
+  data:
+    - actions
+    - resource_id
+    - target_list
+    - team_id
+    - workspace_id

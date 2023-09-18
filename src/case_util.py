@@ -87,7 +87,7 @@ def param():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--u",
-        default="https://pdp-test00.lanhuapp.com/"
+        default="https://pdp-test00.lanhuapp.com"
     )
     parser.add_argument("--m", default="all", choices=["all", "monitor", "MON"])
     return parser.parse_args()

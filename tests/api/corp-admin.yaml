@@ -1,0 +1,12 @@
+del_company_member:
+  address: /api/epm/admin/company_member
+  method: delete
+  body_type: json
+
+
+get_company_member:
+  address: /api/epm/admin/company_member
+  method: get
+  body_type: json
+
+

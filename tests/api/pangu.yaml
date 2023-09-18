@@ -1,0 +1,13 @@
+user_in:
+  address: /api/pangu/project/user_in
+  method: get
+  body_type: json
+  data:
+    - project_id
+
+guide:
+  address: /api/pangu/onboarding/guide
+  method: get
+  body_type: json
+  data:
+    - team_id

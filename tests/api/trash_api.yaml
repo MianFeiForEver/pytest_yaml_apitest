@@ -1,0 +1,26 @@
+# 回收站列表
+trash_list:
+  address: /api/trash/list
+  method: get
+  body_type: json
+  data:
+    - tenant_id
+# 回收站还原
+trash_recover:
+  address: /api/trash/recover
+  method: post
+  body_type: json
+  data:
+    - id
+    - team_id
+    - user_id
+# 获取还原结果
+get_trash_recover:
+  address: /api/trash/recover
+  method: get
+  body_type: json
+  data:
+    - id
+    - team_id
+    - user_id
+# 上传设计图

@@ -1,0 +1,196 @@
+test_workbench_get_files:
+  title: 获取团队内所有文件
+  fixture:
+    - login_admin
+  depends:
+    name: workbench_get_files
+test_guide:
+  title: guide
+test_workbench_get_templates:
+  title: 获取广场模版
+  depends:
+    name: workbench_get_templates
+test_workbench_get_permission:
+  title: 获取用户在团队内的权限点
+test_workbench_get_team_infos:
+  title: 获取团队信息
+test_workbench_dsm_standards_list:
+  title: 获取设计规范信息
+test_workbench_create_folder:
+  title: 创建文件夹1相关成功
+  depends:
+    name: workbench_create_folder
+test_workbench_create_folder_xfail:
+  title: 创建文件夹
+test_workbench_folder_options:
+  title: 获取文件夹三个点操作
+  depends:
+    depends_on:
+      - workbench_create_folder
+test_workbench_rename_folder:
+  title: 重命名文件夹
+  depends:
+    depends_on:
+      - workbench_create_folder
+test_workbench_setcover_folder:
+  title: 文件夹设置封面校验
+  depends:
+    depends_on:
+      - workbench_create_folder
+test_workbench_add_project:
+  title: 创建项目
+  depends:
+    name: workbench_add_project
+test_workbench_add_project_xfail:
+  title: 创建项目
+test_workbench_project_options:
+  title: 获取项目三个点操作
+  depends:
+    depends_on:
+      - workbench_add_project
+test_workbench_rename_project:
+  title: 重命名项目
+  depends:
+    depends_on:
+      - workbench_add_project
+test_workbench_move_project:
+  title: 将项目移动到新建的文件夹1中
+  depends:
+    depends_on:
+      - workbench_create_folder
+      - workbench_add_project
+test_workbench_move_folder:
+  title: 移动文件夹1到文件夹2
+  depends:
+    depends_on:
+      - workbench_create_folder
+test_workbench_ts_outer_short_id:
+  title: 列表页进入ts时外部获取短ID映射
+  depends:
+    name: workbench_ts_outer_short_id
+test_workbench_create_doc_empty:
+  title: 创建空白离散文档
+  depends:
+    name: workbench_create_doc
+
+test_workbench_create_doc_empty_xfail:
+  title: 创建空白离散文档
+test_workbench_doc_options:
+  title: 获取离散文档三个点操作
+  depends:
+    depends_on:
+      - workbench_create_doc
+test_workbench_rename_doc:
+  title: 重命名离散文档
+  depends:
+    depends_on:
+      - workbench_create_doc
+test_workbench_move_doc:
+  title: 将离散文档移动到新建的文件夹1中
+  depends:
+    depends_on:
+      - workbench_create_folder
+      - workbench_create_doc
+test_workbench_create_doc_template:
+  title: 使用广场推荐模版创建离散文档
+  depends:
+    depends_on:
+      - workbench_get_templates
+test_ts_create_doc_independent:
+  title: 进入ts后 使用离散文档下方推荐的模版创建文档，并进行操作
+  depends:
+    name: ts_create_doc_independent
+test_workbench_ts_msg:
+  title: 给离散文档授权用户，并获取消息通知
+test_workbench_create_board:
+  title: 创建思维云图
+  depends:
+    name: workbench_create_board
+test_workbench_create_board_template:
+  title: 使用广场推荐模版创建思维云图
+  depends:
+    depends_on:
+      - workbench_get_templates
+test_workbench_board_options:
+  title: 获取思维云图三个点操作
+  depends:
+    depends_on:
+      - workbench_create_board
+test_workbench_rename_board:
+  title: 重命名思维云图
+  depends:
+    depends_on:
+      - workbench_create_board
+test_workbench_move_board:
+  title: 将思维云图移动到新建的文件夹1中
+  depends:
+    depends_on:
+      - workbench_create_board
+test_ts_doc_independent_option:
+  title: 进入ts后，对离散文档进行操作。重命名、删除
+  depends:
+    depends_on:
+      - ts_create_doc_independent
+test_workbench_del_project:
+  title: 删除项目
+  depends:
+    name: workbench_del_project
+    depends_on:
+      - workbench_add_project
+test_workbench_del_project_xfail:
+  title: 删除项目
+  depends:
+    depends_on:
+      - workbench_add_project
+test_workbench_del_doc:
+  title: 删除空白离散文档 & 广场创建的离散文档
+  depends:
+    name: workbench_del_doc
+test_workbench_del_doc_xfail:
+  title: 删除空白离散文档 & 广场创建的离散文档
+  depends:
+    name: workbench_del_doc
+test_workbench_del_board:
+  title: 删除思维云图
+  depends:
+    name: workbench_del_board
+test_workbench_del_folder:
+  title: 删除文件夹
+test_trash_list_board:
+  title: 回收站搜索思维云图
+  depends:
+    name: trash_list_board
+    depends_on:
+      - workbench_del_board
+test_trash_recover_board:
+  title: 还原思维云图
+  depends:
+    name: trash_recover_board
+    depends_on:
+      - trash_list_board
+test_trash_list_project:
+  title: 回收站搜索项目
+  depends:
+    name: trash_list_project
+    depends_on:
+      - workbench_del_project
+test_trash_recover_project:
+  title: 还原项目
+  depends:
+    name: trash_recover_project
+    depends_on:
+      - trash_list_project
+test_trash_list_ts:
+  title: 回收站搜索ts
+  depends:
+    name: trash_list_ts
+    depends_on:
+      - workbench_del_doc
+test_trash_recover_ts:
+  title: 还原ts空白离散文档
+  depends:
+    name: trash_recover_ts
+    depends_on:
+      - trash_list_ts
+test_workbench_search:
+  title: 项目列表页面搜索

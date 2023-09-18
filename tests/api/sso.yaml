@@ -43,7 +43,7 @@ login:
     - password
 #邮箱注册
 register:
-  address: /api/sso/email/register
+  address: /api/epu/sso/email/register
   method: post
   body_type: json
   data:

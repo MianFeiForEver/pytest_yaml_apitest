@@ -19,11 +19,12 @@ if __name__ == "__main__":
         # cases = f"./case/{project}/test_XX.yaml"  # 可执行单文件
         main_list = [
             cases,
-            "--reruns=1",  # 失败重跑次数
-            "--reruns-delay=1",
+            # "--reruns=1",  # 失败重跑次数
+            # "--reruns-delay=1",
             "--alluredir=./allure-results",
             "--clean-alluredir",
             "-s",
+            "-v",
             "--keep-duplicates",
             # "--durations=10", #根据用例执行时间排序
             "-l",  # --showlocals 打印失败用例的变量值
