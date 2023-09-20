@@ -1,0 +1,185 @@
+test_repo_get_permission:
+  title: 获取资源库权限
+  fixture:
+    - login_admin
+
+test_repo_get_public_setting:
+  title: 获取资源库公开性配置
+
+test_repo_create_folder:
+  title: 创建文件夹
+  depends:
+    name: reop_create_folder
+test_repo_side_folder:
+  title: 获取侧边栏文件夹信息
+  depends:
+    depends_on:
+      - reop_create_folder
+
+test_repo_get_folder_info:
+  title: 获取文件夹信息
+  depends:
+    depends_on:
+      - reop_create_folder
+
+test_repo_upload_auth:
+  title: 资源库上传auth接口
+  depends:
+    name: reop_upload_auth
+
+test_repo_upload:
+  title: 上传文件
+  depends:
+    name: reop_upload_file
+    depends_on:
+      - reop_upload_auth
+
+test_repo_save_file:
+  title: 保存文件
+  depends:
+    name: reop_save_file
+    depends_on:
+      - reop_upload_file
+
+
+#test_repo_update_new_file:
+#  title: 保存新文件
+#  depends:
+#    depends_on:
+#      - reop_save_file
+#
+
+test_repo_get_file:
+  title: 获取文件信息
+  depends:
+    depends_on:
+      - reop_save_file
+
+test_single_move:
+  title: 单个移动资源
+  depends:
+    depends_on:
+      - reop_save_file
+
+test_repo_history_list:
+  title: 获取文件历史列表
+  depends:
+    depends_on:
+      - reop_save_file
+
+test_repo_message:
+  title: 资源库列表接口
+
+test_share_repo_key:
+  title: 创建分享键
+
+test_repo_get_group:
+  title: 获取团队分组成员
+
+
+
+test_view_repo_file_collab:
+  title: 查看文件协作者列表
+
+test_get_repo_file_switch:
+  title: 获取文件开关状态
+  depends:
+    depends_on:
+      - reop_save_file
+#
+test_change_repo_file_switch:
+  title: 修改文件开关状态
+  depends:
+    depends_on:
+      - reop_save_file
+
+test_get_repo_folder_switch:
+  title: 获取文件夹开关状态
+  depends:
+    depends_on:
+      - reop_create_folder
+
+test_change_repo_folder_switch:
+  title: 修改文件夹开关状态
+  depends:
+    depends_on:
+      - reop_create_folder
+
+test_modify_repo_public:
+  title: 修改文件/文件夹的公开性
+
+
+
+test_repo_rename_folder:
+  title: 文件夹重命名
+  depends:
+    depends_on:
+      - reop_create_folder
+
+test_repo_rename_file:
+  title: 修改文件名
+  depends:
+    depends_on:
+      - reop_save_file
+
+test_repo_delete:
+  title: 删除文件/文件夹
+  depends:
+    name: reop_delete
+    depends_on:
+      - reop_create_folder
+
+test_repo_recycle_message:
+  title: 回收站资源库列表接口
+
+test_repo_recover:
+  title: 恢复文件/文件夹
+  depends:
+    depends_on:
+      - reop_delete
+
+test_repo_shred:
+  title: 粉碎文件/文件夹
+  depends:
+    depends_on:
+      - reop_delete
+
+test_handle_domain:
+  title: 获取domain列表
+
+#____________________________________
+
+#
+#
+#test_invite_repo_file_collab:
+#  title: 文件邀请协作者
+#
+#test_invite_repo_folder_collab:
+#  title: 文件夹邀请协作者
+#  name: folder_invite
+
+#  name: view_repo_file_collab
+#  depends_on:
+#    - folder_invite
+#
+##test_modify_repo_file_collab:
+##  title: 文件修改协作者权限
+#
+##test_modify_repo_folder_collab:
+##  title: 文件夹修改协作者权限
+#
+#test_del_repo_file_collab:
+#  title: 文件删除协作者权限
+#  depends_on:
+#    - folder_invite
+
+#
+#folder_invite:
+#  title: 查看文件夹协作者列表
+
+
+
+
+
+
+#

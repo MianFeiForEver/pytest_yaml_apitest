@@ -14,7 +14,7 @@ from src.utils import (
     data_f,
     save_values,
     get_token,
-    get_cookie,
+    get_cookie, get_xfiletoken,
 )
 
 
@@ -95,6 +95,7 @@ def send_request(args):
     if not api_name:
         raise ValueError("未填写api_name")
     cookie = None if not value.get("cookies", True) else get_cookie()
+    xfiletoken = None if not value.get("xfiletoken", False) else get_xfiletoken()
     authorization = (
         get_value("authorization") if value.get("authorization") else None
     )
@@ -104,6 +105,7 @@ def send_request(args):
         params=params,
         cookie=cookie,
         token=get_token(),
+        xfiletoken=xfiletoken,
         authorization=authorization,
     )
     asyncio.run(save_req_result(api_name, value.get("info"), client))
@@ -151,7 +153,7 @@ async def save_req_result(api_name, value_info, client):
     LOG.update({api_name + value_info: info})
 
 
-def api(api_name, data=None, params=None, cookie=None, token=None, authorization=None):
+def api(api_name, data=None, params=None, cookie=None, xfiletoken=None, token=None, authorization=None):
     if data is None:
         data = {}
     url, method, body_type, api_project = ApiInfo().api_info(api_name, params)
@@ -159,6 +161,8 @@ def api(api_name, data=None, params=None, cookie=None, token=None, authorization
     client.set_body(data)
     if authorization:
         client.set_header("authorization", authorization)
+    if xfiletoken:
+        client.set_header("x-file-token", xfiletoken)
     if api_project != "plugin":
         client.set_cookie(cookie)
     else:
