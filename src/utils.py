@@ -90,7 +90,7 @@ class DirPath:
         self.log_path = self.base_dir / BasePath.logs_path.value / f"{get_datetime()}.log"
         self.monitor_path = self.base_dir / BasePath.monitor_path.value / f"{get_date()}"
         self.html_path = self.base_dir / BasePath.html_path.value / f"{get_date()}"
-        self.files_path = self.base_dir / BasePath.files_path.value / f"{get_date()}"
+        self.files_path = self.base_dir / BasePath.files_path.value
 
 
 def data_f(value, key=None):
@@ -123,6 +123,9 @@ def data_f(value, key=None):
     def create_timenow():
         return int(round(time() * 1000))
 
+    def file_name():
+        return f.file_name()
+
     actions = {
         "email": create_email,
         "uuid": create_uuid,
@@ -133,6 +136,7 @@ def data_f(value, key=None):
         "password": create_password,
         "code": code,
         "timenow": create_timenow,
+        "file_name": file_name
     }
 
     if value in actions:
@@ -179,6 +183,12 @@ def get_cookie():
     cookie = get_value("cookie")
     if cookie:
         return cookie
+
+
+def get_xfiletoken():
+    xfiletoken = get_value("xfiletoken")
+    if xfiletoken:
+        return xfiletoken
 
 
 def get_token():

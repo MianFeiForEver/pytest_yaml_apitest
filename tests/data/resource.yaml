@@ -1,0 +1,400 @@
+# 资源库
+repo_get_permission:
+  - api_name: repo_get_permission
+    get:
+      tenant_id: team_id
+    data: { tenant_id: $<tenant_id> }
+    info: 获取资源库权限
+    assertion:
+      code: "00000"
+      msg: "success"
+
+repo_get_public_setting:
+  - api_name: repo_get_public_setting
+    get:
+      team_id: team_id
+    data: { team_id: $<team_id> }
+    info: 获取资源库公开性配置
+    assertion:
+      code: "00000"
+      result.project: False
+      result.repo_file: False
+      result.repo_folder: True
+
+
+repo_create_folder:
+  - api_name: repo_create_folder
+    get:
+      team_id: team_id
+    data: { team_id: $<team_id>, name: 资源库文件夹, source: "1", is_public: true }
+    info: 创建文件夹
+    set:
+      repo_folder_id: $.result.folder_id
+    assertion:
+      code: "00000"
+
+
+
+repo_side_folder:
+  - api_name: repo_side_folder
+    get:
+      team_id: team_id
+    set:
+      folder_id: $.result..folder_id
+    data: { team_id: $<team_id> }
+    info: 获取侧边栏文件夹信息
+    assertion:
+      code: "00000"
+
+repo_get_folder_info:
+  - api_name: repo_get_folder_info
+    get:
+      folder_id: folder_id
+    data: { folder_id: $<folder_id> }
+    info: 获取文件夹信息
+    assertion:
+      code: "00000"
+
+
+
+repo_upload_auth:
+  - api_name: repo_upload_auth
+    info: 资源库上传auth接口
+    get:
+      team_id: team_id
+    data: { size: 2208264,ext: .psd,mime: image/png,team_id: $<team_id>,binary_head: [ 56,66,80,83,0,1,0,0,0,0,0,0,0,3,0,0,9,176,0,0,13,97,0,8,0,3,0,0,0,0,0,0,92,18,56,66,73,77,4,37,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,66,73,77,4,36,0,0,0,0,56,62,60,63,120,112,97,99,107,101,116,32,98,101,103,105,110,61,34,239,187,191,34,32,105,100,61,34,87,53,77,48,77,112,67,101,104,105,72,122,114,101,83,122,78,84,99,122,107,99,57,100,34,63,62,10,60,120,58,120,109,112,109,101,116,97,32,120,109,108,110,115,58,120,61,34,97,100,111,98,101,58,110,115,58,109,101,116,97,47,34,32,120,58,120,109,112,116,107,61,34,65,100,111,98,101,32,88,77,80,32,67,111,114,101,32,53,46,54,45,99,49,52,53,32,55,57,46,49,54,51,52,57,57,44,32,50,48,49,56,47,48,56,47,49,51,45,49,54,58,52,48,58,50,50,32,32,32,32,32,32,32,32,34,62,10,32,32,32,60,114,100,102,58,82,68,70,32,120,109,108,110,115,58,114,100,102,61,34,104 ],content_md5: 25c38eee599294edd1a7856b712833d1 }
+    set:
+      xfiletoken: $.result.token
+    assertion:
+      code: "00000"
+
+repo_upload:
+  - api_name: repo_upload
+    get:
+      token: token
+    xfiletoken: True
+    generate:
+      file_name: file_name
+    set:
+      repo_upload_id: $.result.files.id
+    data: { files: imageA.png ,rename-file: $<file_name>.png }
+    info: 文件中心
+    assertion:
+      code: 0
+
+repo_save_file:
+  - api_name: repo_save_file
+    get:
+      team_id: team_id
+      storage_id: repo_upload_id
+    set:
+      repo_file_id: $.result.file_id
+    data: { team_id: $<team_id>,folder_id: ,storage_id: $<storage_id>, file_name: QbRpHD0M6TMPccSU_oiDD.png, mime: image/png ,content_md5: 77cb3090d47379b022c965dfcf585b77,ext: .png }
+    info: 保存文件
+    assertion:
+      code: "00000"
+
+repo_update_new_file:
+  - api_name: repo_update_new_file
+    get:
+      team_id: team_id
+      file_id: repo_upload_id
+      storage_id: repo_upload_id
+    data: { team_id: $<team_id>, file_id: $<file_id>, storage_id: $<storage_id>, file_name: 11111__ (4).sketch, mime:  ,content_md5: 77cb3090d47379b022c965dfcf585b77, ext: .sketch }
+    info: 保存新文件
+    assertion:
+      code: "00000"
+
+
+
+repo_get_file:
+  - api_name: repo_get_file
+    get:
+      file_id: repo_file_id
+      team_id: team_id
+    data: { file_id: $<file_id>, team_id: $<team_id> }
+    info: 获取文件信息
+    assertion:
+      code: "00000"
+
+single_move:
+  - api_name: single_move
+    get:
+      file_id: repo_file_id
+      folder_id: folder_id
+    data: { resources: [ { resource_id: $<file_id>, type: 1 } ], target_id: $<folder_id> }
+    info: 单个移动资源
+    assertion:
+      code: "00000"
+
+repo_history_list:
+  - api_name: repo_history_list
+    get:
+      #      file_id: repo_upload_id
+      team_id: team_id
+      file_id: repo_file_id
+    data: { team_id: $<team_id>,  file_id: $<file_id> }
+    info: 获取文件历史列表
+    assertion:
+      code: "00000"
+
+
+
+repo_message:
+  - api_name: repo_message
+    get:
+      team_id: team_id
+    data: { team_id: $<team_id>, order_field: open_time, order_type: desc }
+    info: 资源库列表
+    assertion:
+      code: "00000"
+
+share_repo_key:
+  - api_name: share_repo_key
+    get:
+      resource_id: repo_file_id
+    data: { is_internal: true, resource_type: file, resource_id: $<resource_id>, additional: { scope: team, auth: can_view,can_download,can_edit } }
+    info: 创建分享键
+    assertion:
+      code: "00000"
+
+repo_get_group:
+  - api_name: repo_get_group
+    get:
+      team_id: team_id
+      item_id: repo_file_id
+#    set:
+#      vde_ids: $.result[0].children[?(@.is_join==False)].id
+    params: { team_id: team_id,item_id: repo_file_id }
+    info: 获取团队分组成员
+    assertion:
+      code: "00000"
+
+
+# 查看文件协作者列表
+view_repo_file_collab:
+  - api_name: view_repo_file_collab
+    get:
+      file_id: repo_file_id
+#    set:
+#      invite_id: $.result.[1].id
+    data: { file_id: $<file_id> }
+    info: 查看文件协作者列表
+    assertion:
+      code: "00000"
+view_repo_folder_collab:
+  - api_name: view_repo_folder_collab
+    get:
+      folder_id: folder_id
+#    set:
+#      folder_userid: $.result[?(@.root_inviter==true)].id
+    data: { folder_id: $<folder_id> }
+    info: 查看文件夹协作者列表
+    assertion:
+      code: "00000"
+
+get_repo_file_switch:
+  - api_name: get_repo_file_switch
+    get:
+      #      file_id: repo_file_id
+      file_id: repo_file_id
+    data: { file_id: $<file_id> }
+    info: 获取文件开关状态
+    assertion:
+      code: "00000"
+
+get_repo_folder_switch:
+  - api_name: get_repo_folder_switch
+    get:
+      folder_id: folder_id
+    data: { folder_id: $<folder_id> }
+    info: 获取文件夹开关状态
+    assertion:
+      code: "00000"
+
+change_repo_folder_switch:
+  - api_name: change_repo_folder_switch
+    get:
+      folder_id: folder_id
+    data: { folder_id: $<folder_id>, switch: true }
+    info: 修改文件夹开关状态
+    assertion:
+      code: "00000"
+
+
+change_repo_file_switch:
+  - api_name: change_repo_file_switch
+    get:
+      file_id: repo_file_id
+    data: { file_id: $<file_id>, switch: { share_allowed: false, download_allowed: false, edit_allowed: true, is_public: true } }
+    info: 修改文件开关状态
+    assertion:
+      code: "00000"
+
+
+modify_repo_public:
+  - api_name: modify_repo_public
+    get:
+      resource_id: repo_folder_id
+    data: { resource_id: $<resource_id>, type: 1, is_public: true }
+    info: 修改文件/文件夹的公开性
+    assertion:
+      code: "00000"
+
+repo_rename_folder:
+  - api_name: repo_rename_folder
+    get:
+      folder_id: repo_folder_id
+      team_id: team_id
+    data: { id: $<folder_id>, new_name: new_name, team_id: $<team_id> }
+    info: 文件夹重命名
+    assertion:
+      code: "00000"
+
+repo_rename_file:
+  - api_name: repo_rename_file
+    get:
+      file_id: repo_file_id
+      team_id: team_id
+    data: { id: $<file_id>, new_name: test111, team_id: $<team_id> }
+    info: 修改文件名
+    assertion:
+      code: "00000"
+
+
+repo_delete:
+  - api_name: repo_delete
+    get:
+      resource_id: repo_file_id
+      team_id: team_id
+    data: { team_id: $<team_id>, resource_list: [ { id: $<resource_id>, type: file } ] }
+    info: 删除文件/文件夹
+    assertion:
+      code: "00000"
+
+
+repo_recycle_message:
+  - api_name: repo_message
+    get:
+      team_id: team_id
+    set:
+      recycle_resource_id: $.result[0].id
+    data: { team_id: $<team_id>,type: recycle_bin , order_field: edit_time, order_type: desc }
+    info: 回收站资源库列表
+    assertion:
+      code: "00000"
+
+repo_recover:
+  - api_name: repo_recover
+    get:
+      file_id: repo_upload_id
+      team_id: team_id
+      id: recycle_resource_id
+    data: { team_id: $<team_id> ,resource_list: [ { id: $<id>, type: 0 } ] }
+    info: 恢复文件/文件夹
+    assertion:
+      code: "00000"
+
+repo_shred:
+  - api_name: repo_shred
+    get:
+      file_id: repo_file_id
+      team_id: team_id
+    data: { team_id: $<team_id> ,resource_list: [ { id: $<file_id>, type: 0 } ] }
+    info: 粉碎文件/文件夹
+    assertion:
+      code: "00000"
+
+handle_domain:
+  - api_name: handle_domain
+    data: { }
+    info: 获取domain列表
+    assertion:
+      code: "00000"
+
+
+
+#________________________________
+
+
+
+repo_cdn_auth:
+  - api_name: repo_cdn_auth
+    #    data: { file_path: "44TMQXn_8IzEClzznh4YS.jpeg" }
+    data: { file_path: "KTxdHyLHNaWZHuZPF4VYH.png" }
+    info: CDN鉴权
+    assertion:
+      code: "00000"
+
+
+
+
+
+
+repo_file_invite:
+  - api_name: repo_file_invite
+    get:
+      file_id: repo_file_id
+      vde_ids: vde_ids
+    data: { file_id: $<file_id>,vde_ids: $<vde_ids>,vd_ids: "" ,v_ids: "" }
+    info: 文件邀请协作者
+    assertion:
+      code: "00000"
+
+change_file_invite:
+  - api_name: change_file_invite
+    get:
+      file_id: repo_file_id
+      vde_ids: vde_ids
+    data: { file_id: $<file_id>, user_auth: { userid: $<vde_ids>, auth: can_view,can_download } }
+    info: 文件修改协作者权限
+    assertion:
+      code: "00000"
+
+delete_file_invite:
+  - api_name: delete_file_invite
+    get:
+      file_id: repo_file_id
+      #      vde_ids: vde_ids
+      user_id: invite_id
+    data: { file_id: $<file_id>, user_id: $<user_id> }
+    #    data: { file_id: $<file_id>, user_id: 9aacde3e-57eb-4758-bade-deb0a337f728}
+    info: 文件删除协作者
+    assertion:
+      code: "00000"
+
+
+
+repo_folder_invite:
+  - api_name: repo_folder_invite
+    get:
+      folder_id: repo_folder_id
+      vde_ids: vde_ids
+    data: { folder_id: $<folder_id>,vde_ids: $<vde_ids>, vd_ids: "" , v_ids: "" }
+    info: 文件夹邀请协作者
+    assertion:
+      code: "00000"
+
+modify_repo_file_collab:
+  - api_name: modify_repo_file_collab
+    get:
+      folder_id: repo_folder_id
+      vde_ids: vde_ids
+    data: { folder_id: $<folder_id>, user_auth: { userid: $<vde_ids>, auth: can_view } }
+    #    data: { folder_id: $<folder_id>, user_auth: { userid: $<vde_ids>, auth: can_view}}
+    info: 文件夹修改协作者权限
+    assertion:
+      code: "00000"
+
+get_repo_folder_bind:
+  - api_name: get_repo_folder_bind
+    get:
+      folder_id: folder_id
+    data: { folder_id: $<folder_id> }
+    info: 查看文件夹绑定项目
+    assertion:
+      code: "00000"
+
+
+
+

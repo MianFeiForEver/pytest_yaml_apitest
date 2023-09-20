@@ -96,10 +96,16 @@ class HttpClient(object):
                 self.set_header("Content-Type", "text/xml")
                 requests_value = {"data": self.body}
             elif self.body_type == BodyType.FILES:
-                files_path = self.body["files"]
-                self.body["save_par"] = json.dumps(self.body["save_par"])
-                self.body["auth_par"] = json.dumps(self.body["auth_par"])
-                self.body["files"] = (
+                file_key = "files"
+                for i in self.body.keys():
+                    if "file" == i:
+                        file_key = i
+                files_path = self.body[file_key]
+                if self.body.get("save_par"):
+                    self.body["save_par"] = json.dumps(self.body["save_par"])
+                if self.body.get("auth_par"):
+                    self.body["auth_par"] = json.dumps(self.body["auth_par"])
+                self.body[file_key] = (
                     files_path,
                     open(DirPath().files_path / files_path, "rb"),
                     "image/png",
