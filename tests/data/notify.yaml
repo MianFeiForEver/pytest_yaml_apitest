@@ -1,0 +1,79 @@
+notify_team:
+  - api_name: notify_team
+    info: 获取团队通知
+    data: { team_id: $<t_id> }
+    get:
+      t_id: team_id
+
+put_notify_team:
+  - api_name: put_notify_team
+    info: 已读团队通知
+    data: { team_id: $<t_id>, all: true }
+    get:
+      t_id: team_id
+  - api_name: put_notify_team
+    info: 未读团队通知
+    data: { team_id: $<t_id>, all: true }
+    get:
+      t_id: team_id
+
+notify_project:
+  - api_name: notify_project
+    info: 获取所有项目通知
+    data: { team_id: $<t_id> }
+    get:
+      t_id: team_id
+  - api_name: notify_project
+    info: 获取单个项目通知
+    data: { team_id: $<t_id>, pid: $<p_id> }
+    get:
+      t_id: team_id
+      p_id: project_sid
+
+put_notify_project: #项目消息置为未读时500报错
+  - api_name: put_notify_project
+    info: 已读所有项目通知
+    data: { team_id: $<t_id>, all: true }
+    get:
+      t_id: team_id
+    assertion:
+      code: '00000'
+  - api_name: put_notify_team
+    info: 已读单项目通知
+    data: { pid: $<p_id>, all: true }
+    get:
+      p_id: project_sid
+    assertion:
+      code: '00000'
+
+message_cnt:
+  - api_name: message_cnt
+    info: 获取团队未读消息数
+    data: { team_id: $<t_id> }
+    get:
+      t_id: team_id
+    assertion:
+      code: '00000'
+  - api_name: message_cnt
+    info: 获取项目未读消息数
+    data: { team_id: $<t_id>, pid: $<p_id> }
+    get:
+      t_id: team_id
+      p_id: project_sid
+    assertion:
+      code: '00000'
+#  - api_name: put_notify_team
+#    info: 未读所有项目通知
+#    data: {team_id: $<t_id>,all: false}
+#    get:
+#      t_id: team_id
+#    assertion:
+#      code: "00000"
+#  - api_name: put_notify_team
+#    info: 未读单项目通知
+#    data: {pid: $<p_id>,all: false}
+#    get:
+#      p_id: project_sid
+#    assertion:
+#      code: "00000"
+

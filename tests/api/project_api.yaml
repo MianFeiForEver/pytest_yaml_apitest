@@ -267,8 +267,6 @@ del_comment:
     - project_id
     - image_id
 
-
-
 # 画布上新增评论
 new_add_comment:
   address: /api/comment/v1/comment
@@ -494,7 +492,7 @@ prototype:
   body_type: json
   data:
     - code
-    - p_nmae
+    - p_name
     - team_id
     - project_id
     - positions
@@ -525,7 +523,16 @@ get_image_home:
   body_type: json
   data:
     - pid
-    - teaam_id
+    - team_id
+
+#  获取产品页分组
+get_product_documents:
+  address: /api/project/product_documents
+  method: get
+  body_type: json
+  data:
+    - team_id
+    - project_id
 
 recently_used_project:
   address: /api/lhnotify/project/recently_used_project
@@ -533,9 +540,6 @@ recently_used_project:
   body_type: json
   data:
     - team_id
-
-
-
 
 #状态图
 set_type:
@@ -727,18 +731,6 @@ widgets_upload_image:
   body_type: json
   data: files
 
-#画布页文档信息存储接口
-get_drawer_page:
-  address: /api/drawer/page
-  method: get
-  body_type: json
-  data: 无需参数
-#c端抽屉展示-文章详情
-post_drawer_page:
-  address: /api/drawer/page
-  method: post
-  body_type: json
-  data: id
 
 #c端抽屉页-获取当前版本
 drawer_version:
@@ -758,8 +750,17 @@ drawer_popups:
 
 
 #获取项目详情页的权限点
-permission:
+project_permission:
   address: /api/project/permission
+  method: post
+  body_type: json
+  data:
+    - project_id
+    - tenant_id
+
+#快捷分享项目获取权限
+public_permission:
+  address: /api/project/public_permission
   method: post
   body_type: json
   data:

@@ -212,3 +212,5 @@ def get_base_url():
 
 def save_info(base_url):
     set_ini("base_url", base_url)
+    set_value("base_url", base_url)
+

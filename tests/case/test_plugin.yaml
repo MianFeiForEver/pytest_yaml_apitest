@@ -1,0 +1,67 @@
+test_store_token:
+  title: 存储生成的token
+  fixture:
+    - login_admin
+  depends:
+    name: store_token
+test_get_login_token:
+  title: 获取token
+  depends:
+    name: get_token
+    depends_on:
+      - store_token
+test_plugin_login:
+  title: 插件登录
+  depends:
+    depends_on:
+      - get_token
+test_plugin_tips:
+  title: 获取插件动态提示
+test_plugin_user_info:
+  title: 插件获取个人信息
+  depends:
+    depends_on:
+      - get_token
+test_plugin_user_teams:
+  title: 插件获取团队
+  depends:
+    name: plugin_team
+    depends_on:
+      - get_token
+test_project_info:
+  title: 插件创建项目
+  depends:
+    name: plugin_create_project
+    depends_on:
+      - plugin_team
+test_plugin_projects:
+  title: 插件获取项目
+  depends:
+    name: plugin_projects
+    depends_on:
+      - plugin_create_project
+test_plugin_folder:
+  title: 插件_获取文件夹
+  depends:
+    depends_on:
+      - plugin_team
+test_plugin_folder_projects:
+  title: 插件_获取文件夹下项目
+  depends:
+    depends_on:
+      - plugin_team
+test_plugin_project_sectors:
+  title: 插件_获取文件夹下分组
+  depends:
+    depends_on:
+      - plugin_projects
+test_plugin_err_status:
+  title: 检测插件可上传状态
+  depends:
+    depends_on:
+      - plugin_projects
+test_plugin_del_project:
+  title: 插件删除项目
+  depends:
+    depends_on:
+      - plugin_create_project

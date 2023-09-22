@@ -1,0 +1,104 @@
+#插件
+store_token:
+  - api_name: store_token
+    info: 存储生成的token
+    data: { connection_id: $<connection_id> }
+    generate:
+      connection_id: uuid
+    assertion:
+      code: '00000'
+      msg: Success
+get_login_token:
+  - api_name: get_login_token
+    info: 获取token
+    data: { connection_id: $<connection_id> }
+    cookies: false
+    get:
+      connection_id: connection_id
+    set:
+      plugin_token: $.data.token
+    assertion:
+      code: '00000'
+      msg: Success
+      data.token: exist
+plugin_login:
+  - api_name: plugin_login
+    info: 插件登录
+    data: { }
+
+plugin_tips:
+  - api_name: plugin_tips
+    info: 获取插件动态提示
+    data: { build_id: 11, plugin_fullname: lanhu-master-plugin }
+
+
+plugin_user_info:
+  - api_name: plugin_user_info
+    info: 插件获取个人信息
+    data: { }
+
+plugin_user_teams:
+  - api_name: plugin_user_teams
+    info: 获取插件团队
+    assertion:
+      code: '00000'
+      msg: Success
+project_info:
+  - api_name: project_info
+    info: 插件创建项目
+    data: { name: 插件项目, team_id: $<tid>, type: mobile }
+    get:
+      tid: team_id
+    set:
+      plugin_pid: $.result.id
+plugin_projects:
+  - api_name: plugin_projects
+    info: 插件获取项目
+    data: { team_id: $<tid>, pageSize: 100, pageNo: 1 }
+    get:
+      tid: team_id
+    set:
+      plugin_pid: $.result[0].id
+plugin_folder:
+  - api_name: plugin_folder
+    info: 插件_获取文件夹
+    data: { team_id: $<tid>, default_order: desc, pageNo: 1 }
+    get:
+      tid: team_id
+
+plugin_folder_projects:
+  - api_name: plugin_folder_projects
+    info: 插件_获取文件夹下项目
+    data: { team_id: $<tid>, default_order: desc, pageNo: 1 }
+    get:
+      tid: team_id
+plugin_project_sectors:
+  - api_name: plugin_project_sectors
+    info: 插件_获取文件夹下分组
+    data: { project_id: $<pid> }
+    get:
+      pid: plugin_pid
+    assertion:
+      code: '00000'
+
+plugin_err_status:
+  - api_name: plugin_err_status
+    info: 检测插件可上传状态
+    data: { project_id: $<pid>, team_id: $<tid> }
+    get:
+      tid: team_id
+      pid: plugin_pid
+    assertion:
+      code: '00000'
+      msg: Success
+
+plugin_del_project:
+  - data: { code: 10032, project_id: $<pid>, team_id: $<tid>, p_name: 插件项目 }
+    api_name: del_project
+    info: 插件删除项目
+    assertion:
+      code: '00000'
+      msg: Success
+    get:
+      tid: team_id
+      pid: plugin_pid

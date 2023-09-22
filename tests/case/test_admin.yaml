@@ -1,0 +1,176 @@
+test_admin_create_team:
+  title: 创建admin团队
+  fixture:
+    - login_test
+  depends:
+    name: admin_create_team
+#test_admin_create_project:
+#  title: 创建admin项目
+#  depends:
+#    name: create_admin_project
+#    depends_on:
+#      - admin_create_team
+#test_admin_member_invite:
+#  title: 通过手机号和邮箱发送邀请
+#  depends:
+#    name: admin_member_invite
+#    depends_on:
+#      - admin_create_team
+#test_share_link:
+#  title: 生成邀请链接
+#  depends:
+#    name: share_link
+#    depends_on:
+#      - admin_create_team
+#test_resolve_link:
+#  title: 解析邀请链接
+#  fixture:
+#    - login_admin
+#  depends:
+#    name: resolve_link
+#    depends_on:
+#      - share_link
+#test_link_join_team:
+#  title: 加入团队
+#  depends:
+#    name: resolve_link
+#test_member_list:
+#  title: 获取团队成员列表
+#  fixture:
+#    - login_test
+#  depends:
+#    name: member_List
+#test_admin_update_projects:
+#  title: 批量更新成员项目
+#  depends:
+#    depends_on:
+#      - create_admin_project
+#test_member_role_list:
+#  title: admin权限列表
+#  depends:
+#    depends_on:
+#      - create_admin_project
+#test_update_member_role:
+#  title: 修改角色
+#  depends:
+#    depends_on:
+#      - member_List
+#test_update_member_info:
+#  title: 成员信息修改
+#  depends:
+#    depends_on:
+#      - member_List
+#test_create_meta:
+#  title: 创建用户组
+#  depends:
+#    name: create_meta
+#    depends_on:
+#      - admin_create_team
+#test_edit_meta:
+#  title: 编辑用户组
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_group_List:
+#  title: 用户组列表
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_put_member_groups:
+#  title: 用户增加多个用户组
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_post_member:
+#  title: 添加成员
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_delete_member:
+#  title: 移除成员
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_group_member_list:
+#  title: 用户组成员
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_get_member_groups:
+#  title: 某个成员所属用户组
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_update_group_order:
+#  title: 更新用户组顺序
+#  depends:
+#    depends_on:
+#      - create_meta
+#
+#test_watermark:
+#  title: 水印测试
+#test_permission_info:
+#  title: 获取当前用户admin权限
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_admin_permission:
+#  title: 获取admin_permission
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_tenant_info:
+#  title: 获取团队信息
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_tenant_folder_project:
+#  title: 获取团队项目、文件夹列表
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_del_meta:
+#  title: 删除用户组
+#  depends:
+#    depends_on:
+#      - create_meta
+#test_trigger_condition_judgment:
+#  title: 触发条件判断
+#test_modify_info:
+#  title: 编辑团队信息
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_transfer_tenant:
+#  title: 移交企业
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_quit_tenant:
+#  title: 退出团队
+#test_member_resign:
+#  title: 移出团队
+#  fixture:
+#    - login_admin
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_merge_tenant_old:
+#  title: 合并企业-老，A合并到B
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_dissolve_tenant:
+#  title: 删除团队接口
+#  fixture:
+#    - login_admin
+#test_get_saml:
+#  title: 获取团队 SAML 设置
+#  depends:
+#    depends_on:
+#      - admin_create_team
+#test_get_switch_saml:
+#  title: 获取 SAML 开关状态
+#  depends:
+#    depends_on:
+#      - admin_create_team
