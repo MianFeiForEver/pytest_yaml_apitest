@@ -623,7 +623,7 @@ ts_create_doc_independent:
   - api_name: get_ts_single_doc
     info: 获取离散文档的信息
     data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -632,7 +632,7 @@ ts_create_doc_independent:
   - api_name: get_ts_single_recommend
     info: 获取离散文档空白文档下方的推荐模版
     data: { team_id: $<team_id> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
     set:
@@ -645,7 +645,7 @@ ts_create_doc_independent:
     info: 将下方的推荐模版填充到文档，进行覆盖创建
     data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
             ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -658,7 +658,7 @@ ts_create_doc_independent:
     info: 将下方的推荐模版填充到文档，进行覆盖创建,参数校验team_id缺失
     data: { ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>, ydoc_id: $<workbench_ydoc_id1>,
             ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -671,7 +671,7 @@ ts_create_doc_independent:
     info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-ydoc_id缺失
     data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
             ydoc_icon: $<recommend_ydoc_icon>, template_id: $<recommend_template_id> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       recommend_template_id: recommend_template_id
@@ -684,7 +684,7 @@ ts_create_doc_independent:
     info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-template_id缺失
     data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
             ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -697,7 +697,7 @@ ts_create_doc_independent:
     info: 将下方的推荐模版填充到文档，进行覆盖创建，参数校验-template_id异常
     data: { team_id: $<team_id>, ydoc_type: idoc, ydoc_title: $<recommend_ydoc_title>,
             ydoc_id: $<workbench_ydoc_id1>, ydoc_icon: $<recommend_ydoc_icon>, template_id: 2b2128f9-fdfb-43e6-8395 }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -713,7 +713,7 @@ ts_doc_independent_option:
     info: ts内部对文档重命名
     data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1>, ydoc_title: ts内部推荐模版离散文档-重命名done,
             ydoc_icon: 1f618 }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -722,7 +722,7 @@ ts_doc_independent_option:
   - api_name: rename_ts_single_doc
     info: ts内部对文档重命名，参数校验-ydocid缺失
     data: { team_id: $<team_id>, ydoc_title: ts内部离散文档重命名, ydoc_icon: 1f618 }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
     assertion:
@@ -731,7 +731,7 @@ ts_doc_independent_option:
   - api_name: del_ts_single_doc
     info: ts内部删除文档
     data: { team_id: $<team_id>, ydoc_id: $<workbench_ydoc_id1> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -740,7 +740,7 @@ ts_doc_independent_option:
   - api_name: del_ts_single_doc
     info: ts内部删除文档，参数校验-ydocid缺失
     data: { team_id: $<team_id> }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
     assertion:
@@ -947,7 +947,7 @@ workbench_ts_doc_permission:
             page_num: 1, page_size: 20 }
     get:
       team_id: team_id
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     set:
       ts_user_id: $.result.records[0].user_id
     assertion:
@@ -959,14 +959,14 @@ workbench_ts_doc_permission:
     data: { team_id: $<team_id>, keyword: 781929291@qq.com, page_num: 1, page_size: 20 }
     get:
       team_id: team_id
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     assertion:
       code: 302
   - api_name: ts_post_permission
     info: 给该用户授权
     data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, actions: '1,4,6,90004',
             target_list: [ { target_id: $<ts_user_id>, target_type: 1 } ] }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -978,7 +978,7 @@ workbench_ts_doc_permission:
     info: 给该用户授权-重复授权，授权失败
     data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, actions: '1,4,6,90004',
             target_list: [ { target_id: $<ts_user_id>, target_type: 1 } ] }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1
@@ -989,7 +989,7 @@ workbench_ts_doc_permission:
     info: 清理数据-移除授权的用户
     data: { team_id: $<team_id>, resource_id: $<workbench_ydoc_id1>, from_actions: '1,4,6,90004',
             target_id: $<ts_user_id>, target_type: 1 }
-    params: { team_id: $<team_id> }
+    params: { team_id: team_id }
     get:
       team_id: team_id
       workbench_ydoc_id1: workbench_ydoc_id1

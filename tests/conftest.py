@@ -142,19 +142,21 @@ def auth(ticket, action, action_type):
 def session_setup_teardown():
     client = login("admin")
     set_value("uid", client.res_to_json_path("$.id"))
-    team_ids = jsonpath(client.res_json, '$.teams[?(@.name=="接口自动化团队")]..id')
-    if team_ids:
-        for team_id in team_ids:
-            dissolve_tenant(team_id)
-    setup_team()
-    clear_tester()
+    team_dict = {}
+    team_names = ["接口自动化团队", "TestTeamB", "TestTeamA"]
+    for team_name in team_names:
+        team_dict[team_name] = jsonpath(client.res_json, f'$.teams[?(@.name=={team_name})]..id')
+    for team_name, team_ids in team_dict.items():
+        if team_ids:
+            for team_id in team_ids:
+                dissolve_tenant(team_id, team_name)
     create_team()
     corp_setup()
     setup_tester()
     yield
     if team_id := get_value("team_id"):
         login("admin")
-        dissolve_tenant(team_id)
+        dissolve_tenant(team_id, "接口自动化团队")
 
 
 def corp_setup():
@@ -182,8 +184,8 @@ def setup_tester():
     #         data={"user_id": tester_id, "transfer_user_id": get_value("uid")})
 
 
-def dissolve_tenant(team_id):
-    dissolve_data = {"tenant_id": team_id, "name": "接口自动化团队", "password": get_value("admin_password"),
+def dissolve_tenant(team_id, team_name):
+    dissolve_data = {"tenant_id": team_id, "name": team_name, "password": get_value("admin_password"),
                      "cur_user_id": get_value("uid")}
 
     api(api_name="dissolve_tenant", cookie=get_value("cookie"), data=dissolve_data)

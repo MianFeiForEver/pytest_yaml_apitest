@@ -2,9 +2,9 @@ admin_create_team:
   - api_name: create_team
     info: 创建admin_A团队成功
     data: { name: TestTeamA }
-    params: { team_id: team_id }
+    params: { team_id: admin_team_id }
     generate:
-      team_id: uuid
+      admin_team_id: uuid
     set:
       admin_team_id: $..id
       admin_team_name: $.result.name
@@ -14,9 +14,9 @@ admin_create_team:
   - api_name: create_team
     info: 创建admin_B团队成功
     data: { name: TestTeamB }
-    params: { team_id: team_id }
+    params: { team_id: admin_team_id_B }
     generate:
-      team_id: uuid
+      admin_team_id_B: uuid
     set:
       admin_team_id_B: $..id
       admin_team_name_B: $.result.name

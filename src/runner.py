@@ -87,9 +87,9 @@ def send_request(args):
             print(up_dict)
             print("最终data", data)
             pytest.fail(f"请求失败，数据中有未知字符变量的计算值！")
-        if params:
-            for key in params.keys():
-                params.update({key: up_dict.get(key)} or params[key])
+    if params:
+        for params_key, params_value in params.items():
+            params.update({params_key: up_dict.get(params_value)} or params_value)
 
     # 发送请求
     if not api_name:
@@ -169,8 +169,3 @@ def api(api_name, data=None, params=None, cookie=None, xfiletoken=None, token=No
         client.set_header("authorization", token)
     client.send()
     return client
-
-
-def register_test():
-    email = "test@jwzg.com"
-    password = "Lanhu123"
