@@ -145,7 +145,7 @@ def session_setup_teardown():
     team_dict = {}
     team_names = ["接口自动化团队", "TestTeamB", "TestTeamA"]
     for team_name in team_names:
-        team_dict[team_name] = jsonpath(client.res_json, f'$.teams[?(@.name=={team_name})]..id')
+        team_dict[team_name] = jsonpath(client.res_json, f'$.teams[?(@.name=="{team_name}")]..id')
     for team_name, team_ids in team_dict.items():
         if team_ids:
             for team_id in team_ids:
