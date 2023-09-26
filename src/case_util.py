@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 from string import Template
 
+import pytest
 from ruamel.yaml import YAML
 
 from .utils import set_value, DirPath, singleton, get_value, get_base_url
@@ -74,6 +75,9 @@ class ApiInfo:
 
     def api_info(self, name, params):
         api = self.api_data().get(name)
+        if not api:
+            print("没有找到对应的api", name)
+            pytest.skip()
         api_path = api.get("address")
         api_project = api.get("project", "")
         base_url = get_base_url()

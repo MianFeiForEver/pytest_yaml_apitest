@@ -1,0 +1,158 @@
+# address 接口path  必要字段
+# method 请求方式 post get put delete
+#body_type 请求体格式 url-encode json xml form-data
+#data 接口所需字段
+#name:
+#  address:
+#  method:
+#  body_type:
+
+# #生成邀请链接
+# serializer:
+#   address: /api/project/serializer
+#   method: post
+#   body_type: json
+#   data:
+#     - time
+#     - data: { "date": "2021-04-22","team_id": "b196468b-8824-46e8-b96b-3a7bbe77bc9b","project_ids": "","role": "admin","team_name": "22","avatar": null,"username": "3","color": "red","by": "share_link","s": "team_link" }
+# #生成短链
+# short_url:
+#   address: /url/short
+#   method: post
+#   body_type: url-encode
+#   data:
+#     - url: https://lanhuapp.com/web/#!/user/invite?tid=10071911-d0ac-46a6-b21a-5454625e59b1
+#     - param
+#     - param_time
+# #邮件邀请加入
+# put_invite_member:
+#   address: /api/account/invite_member
+#   method: put
+#   body_type: json
+#   data:
+#     - email
+#     - team_id
+#     - role
+#     - invite_id
+#     - serialized_str
+# #链接加入
+# put_invite_no_trace:
+#   address: /api/account/invite_no_trace
+#   method: put
+#   body_type: json
+#   data:
+#     - email
+#     - team_id
+#     - role
+#     - invite_id
+#     - serialized_str
+#     - pending
+# #快捷分享
+# share_project:
+#   address: /api/project/share_project
+#   method: post
+#   body_type: json
+#   data:
+#     - code
+#     - p_name
+#     - team_id
+#     - project_id
+
+# shorturl_share_project:
+#   address: /api/project/shorturl_share_project
+#   method: post
+#   body_type: json
+#   data:
+#     - expire
+#     - need_pwd
+#     - project_id
+# can_visit:
+#   address: /api/account/user/can/visit
+#   method: get
+#   body_type: json
+#   data:
+#     - expire
+#     - need_pwd
+#     - project_id
+
+
+# -------------------------------新版分享邀请-------------------------------
+# 获取分享框初始化配置
+share_init:
+  address: /api/sharesvc/init
+  method: get
+  body_type: json
+  data:
+    - mody_type
+    - mod_id
+
+# 生成分享链接
+share_link:
+  address: /api/sharesvc/link
+  method: post
+  body_type: json
+  data:
+    - data:
+        - team_id
+        - team_name
+        - need_pwd
+        - avatar
+        - username
+        - color
+        - invite_id
+        - from
+        - url
+        - role
+        - project_ids
+        - share_type
+    - expire_time
+    - reset_type
+
+# 点击邀请链接-解析邀请链接
+resolve_link:
+  address: /api/share/url/resolve
+  method: post
+  body_type: json
+  data:
+    - short_id
+
+# 未开启审核时点击加入团队
+member_add:
+  address: /api/share/member_add
+  method: post
+  body_type: json
+  data:
+    - share_short_id
+    - team_id
+
+# 开启审核时提交审批申请加入团队
+apply_join_team:
+  address: /api/share/apply_join_team
+  method: post
+  body_type: json
+  data:
+    - team_id
+    - apply_remark
+    - apply_name
+    - share_short_id
+
+# 获取团队分组和项目成员信息
+get_memberinfo:
+  address: /api/account/member
+  method: get
+  body_type: json
+  data:
+    - team_id
+
+# 手机号/邮箱邀请
+send_link:
+  address: /api/sharesvc/send_link
+  method: post
+  body_type: json
+  data:
+    - data
+    - tenant_users
+    - emails
+    - phone_numbers
+
+# 判断project_id所对应的快捷分享是否被重置过

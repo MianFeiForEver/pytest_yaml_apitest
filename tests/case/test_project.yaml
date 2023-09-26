@@ -1,0 +1,385 @@
+test_create_project:
+  title: 创建项目接口
+  fixture:
+    - login_admin
+  depends:
+    name: create_project
+test_project_permission:
+  title: 获取项目权限
+  depends:
+    depends:
+      - create_project
+test_user_in:
+  title: project_user_in
+  depends:
+    depends:
+      - create_project
+test_upload_image:
+  title: 上传设计图
+  scope:
+    - session
+  depends:
+    name: upload_image
+    depends:
+      - create_project
+test_upload_image_re:
+  title: 上传设计图反向
+test_get_image:
+  title: 获取图片信息
+  depends:
+    depends:
+      - upload_image
+test_get_cntlimitinfo:
+  title: 获取项目设计图数量限制信息
+  depends:
+    depends:
+      - upload_image
+test_set_type:
+  title: 图片状态
+  depends:
+    depends:
+      - upload_image
+test_copyimage:
+  title: 复制粘贴图片
+  depends:
+    depends:
+      - upload_image
+test_card:
+  title: 创建文字卡片
+  depends:
+    name: create_card
+    depends:
+      - create_project
+
+test_upload_files:
+  title: base上传
+test_upload_file:
+  title: 上传文件
+  depends:
+    name: upload_file
+    depends:
+      - create_project
+test_get_product_documents:
+  title: 获取产品文档
+  depends:
+    depends:
+      - create_project
+test_create_fuse_card:
+  title: 创建融合卡片
+  depends:
+    depends:
+      - create_project
+test_sector:
+  title: 创建设计图分组
+  depends:
+    name: create_sector
+    depends:
+      - upload_image
+test_rename_sector:
+  title: 重命名设计图分组
+  depends:
+    depends:
+      - create_sector
+test_get_project_sectors:
+  title: 获取项目分组
+  depends:
+    depends:
+      - create_sector
+test_change_sector:
+  title: 增删分组设计图
+  depends:
+    depends:
+      - create_sector
+test_sector_sort:
+  title: 分组排序
+  depends:
+    depends:
+      - create_sector
+test_sector_image_sort:
+  title: 分组图片排序
+  depends:
+    depends:
+      - create_sector
+test_bookmark:
+  title: 创建资源
+  depends:
+    name: bookmark
+test_get_bookmark:
+  title: 获取资源
+test_put_bookmark:
+  title: 修改资源
+test_get_drawer_version:
+  title: 运营抽屉版本接口
+test_drawer_popups:
+  title: 获取主站自定义弹窗信息
+test_user_pic_status:
+  title: 获取项目图片更新
+  depends:
+    depends:
+      - create_project
+test_change_project_type:
+  title: 修改项目类型
+  depends:
+    depends:
+      - create_project
+test_change_project_name:
+  title: 修改项目名称
+  depends:
+    depends:
+      - create_project
+test_get_project_info:
+  title: 获取项目信息
+  depends:
+    depends:
+      - create_project
+test_get_project_multi_info:
+  title: 获取项目混合信息
+  depends:
+    depends:
+      - create_project
+test_multiple_projects:
+  title: 获取项目简单信息
+  depends:
+    depends:
+      - create_project
+test_project_user:
+  title: 获取项目成员信息
+  depends:
+    depends:
+      - create_project
+test_get_compressed:
+  title: 获取>20M的压缩后的图片
+  depends:
+    depends:
+      - upload_image
+test_image_home:
+  title: 设置原型主页
+  depends:
+    depends:
+      - upload_image
+test_get_image_home:
+  title: 获取原型主页
+  depends:
+    depends:
+      - upload_image
+test_prototype:
+  title: 添加原型链接
+  depends:
+    name: add_url
+    depends:
+      - upload_image
+test_get_prototype:
+  title: 获取原型链接
+  depends:
+    depends:
+      - add_url
+test_update_version:
+  title: 修改图片版本名称
+test_image_contrast:
+  title: 图片对比
+test_image_contrast_re:
+  title: 图片对比反向
+test_link:
+  title: 创建连线
+  depends:
+    name: link
+    depends:
+      - upload_image
+test_connection_explain:
+  title: 连线说明
+  depends:
+    depends:
+      - link
+test_comment:
+  title: 创建评论
+  depends:
+    name: comment
+    depends:
+      - upload_file
+test_change_comment_status:
+  title: 修改评论状态
+  depends:
+    depends:
+      - comment
+
+test_del_comment:
+  title: 删除评论
+  depends:
+    depends:
+      - comment
+test_new_comment_canvas:
+  title: 创建画布评论
+  depends:
+    name: new_comment_canvas
+    depends:
+      - create_project
+test_new_comment_img:
+  title: 创建设计图评论
+  depends:
+    name: new_comment_img
+    depends:
+      - upload_image
+test_new_comment_replay:
+  title: 回复评论
+  depends:
+    name: new_comment_replay
+    depends:
+      - new_comment_img
+test_new_comment_update:
+  title: 编辑回复
+  depends:
+    name: new_comment_update
+    depends:
+      - new_comment_replay
+test_new_get_comment_replay:
+  title: 获取回复内容
+  depends:
+    name: new_get_comment_replay
+    depends:
+      - new_comment_replay
+test_new_get_comment_multi:
+  title: 获取设计图锚点信息
+  depends:
+    name: new_get_comment_multi
+    depends:
+      - new_comment_img
+test_new_get_comment_count:
+  title: 获取评论回复条数
+  depends:
+    name: new_get_comment_count
+    depends:
+      - new_comment_img
+test_new_get_anchor:
+  title: 根据资源获取锚点
+  depends:
+    name: new_get_anchor
+    depends:
+      - create_project
+test_search_product_file:
+  title: 搜索产品页文档
+  depends:
+    depends:
+      - bookmark
+
+test_sketch_upload_imgA:
+  title: sketch插件上传设计图A
+  scope:
+    - session
+  depends:
+    name: upload_skt_imageA
+    depends:
+      - create_project
+
+test_search_project:
+  title: 项目内搜索
+  depends:
+    depends:
+      - upload_image
+test_sketch_upload_imgB:
+  title: sketch插件上传设计图B
+  scope:
+    - session
+  depends:
+    name: upload_skt_imageB
+    depends:
+      - create_project
+test_notify_team:
+  scope:
+    - session
+  depends:
+    name: notify_team
+    depends:
+      - create_project
+test_put_notify_team:
+  depends:
+    depends:
+      - notify_team
+test_notify_project:
+  depends:
+    depends:
+      - notify_team
+test_put_notify_project:
+  depends:
+    depends:
+      - notify_team
+test_message_cnt:
+  title: 获取未读消息数
+  depends:
+    depends:
+      - create_project
+test_recently_used_project:
+  title: 获取团队下所有项目最近一个月最后使用时间
+
+test_new_delete_replay:
+  title: 删除回复
+  depends:
+    name: new_delete_replay
+    depends:
+      - new_comment_replay
+
+test_new_delete_anchor:
+  title: 删除锚点
+  depends:
+    name: new_delete_anchor
+    depends:
+      - new_comment_img
+test_del_file:
+  title: 删除文件
+  depends:
+    depends:
+      - upload_file
+test_del_link:
+  title: 删除连线
+  depends:
+    depends:
+      - link
+test_delete_card:
+  title: 删除文字卡片
+  depends:
+    depends:
+      - create_card
+
+test_del_sector:
+  title: 删除设计图分组
+  depends:
+    depends:
+      - create_sector
+test_del_bookmark:
+  title: 删除资源
+  depends:
+    depends:
+      - bookmark
+test_del_sketch_upload_img:
+  title: 删除sketch上传的设计图图片版本
+  scope:
+    - session
+  depends:
+    depends:
+      - upload_skt_imageB
+test_del_image:
+  title: 删除设计图
+  depends:
+    name: del_image
+    depends:
+      - upload_image
+test_cximage_recovery:
+  title: 撤销删除设计图
+  depends:
+    depends:
+      - del_image
+test_trash_list_files:
+  title: 回收站列表
+  depends:
+    name: trash_list_files
+test_trash_recover_files:
+  title: 还原回收站内容
+  depends:
+    name: trash_recove
+
+test_get_trash_recover_files:
+  title: 获取还原结果
+test_quit_project:
+  title: 退出项目
+  depends:
+    depends:
+      - create_project

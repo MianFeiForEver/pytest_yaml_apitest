@@ -1,0 +1,560 @@
+admin_create_team:
+  - api_name: create_team
+    info: 创建admin_A团队成功
+    data: { name: TestTeamA }
+    params: { team_id: admin_team_id }
+    generate:
+      admin_team_id: uuid
+    set:
+      admin_team_id: $..id
+      admin_team_name: $.result.name
+    assertion:
+      result.name: TestTeamA
+      result.id: exist
+  - api_name: create_team
+    info: 创建admin_B团队成功
+    data: { name: TestTeamB }
+    params: { team_id: admin_team_id_B }
+    generate:
+      admin_team_id_B: uuid
+    set:
+      admin_team_id_B: $..id
+      admin_team_name_B: $.result.name
+    assertion:
+      result.name: TestTeamB
+      result.id: exist
+member_list:
+  - api_name: member_list
+    info: 获取团队成员列表
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    set:
+      user_member_id: $.result.data[1].user_id
+    assertion:
+      code: '00000'
+permission_info:
+  - api_name: get_user_admin_permission
+    info: 获取当前用户admin权限
+    data: { tenant_id: $<team_id> }
+    get:
+      team_id: admin_team_id
+    assertion:
+      code: '00000'
+admin_permission:
+  - api_name: project_permission
+    info: admin权限
+    data: { tenant_id: $<team_id> }
+    get:
+      team_id: admin_team_id
+    assertion:
+      code: '00000'
+tenant_info:
+  - api_name: tenant_info
+    info: 获取团队信息
+    data: { tenant_id: $<team_id> }
+    get:
+      team_id: admin_team_id
+    assertion:
+      code: '00000'
+member_role_list:
+  - api_name: member_role_list
+    info: admin权限列表
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+update_member_role:
+  - api_name: update_member_role
+    info: 修改角色
+    data: { role_name: '202', ids: [ $<user_member_id> ], tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: user_member_id
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+tenant_folder_project:
+  - api_name: tenant_folder_project
+    info: 获取团队项目、文件夹列表
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, user_id: $<u_id> }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+
+group_List:
+  - api_name: admin_group_list
+    info: 获取用户组列表
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+
+create_meta:
+  - api_name: create_meta
+    info: 创建用户组A
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, description: '', group_name: 创建用户组A }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    set:
+      group_id_A: $.result.group_id
+    assertion:
+      code: '00000'
+  - api_name: create_meta
+    info: 创建用户组B
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, description: '', group_name: 创建用户组B }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+    set:
+      group_id_B: $.result.group_id
+    assertion:
+      code: '00000'
+edit_meta:
+  - api_name: edit_meta
+    info: 编辑用户组
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, group_id: $<group_id>, description: '',
+            group_name: 修改用户组 }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+      group_id: group_id_A
+    assertion:
+      code: '00000'
+del_meta:
+  - api_name: del_meta
+    info: 删除用户组
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, group_id: $<group_id> }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+      group_id: group_id_A
+    assertion:
+      code: '00000'
+
+
+modify_info:
+  - api_name: modify_tenant_info
+    info: 修改团队信息
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, tenant_name: 修改团队名称 }
+    get:
+      team_id: admin_team_id
+      u_id: test_uid
+
+
+dissolve_tenant:
+  - api_name: dissolve_tenant
+    info: 密码错误
+    data: { tenant_id: $<team_id>, name: 修改团队名称, password: '11111111', cur_user_id: $<u_id> }
+    params: { team_id: team_id }
+    get:
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00004'
+  - api_name: dissolve_tenant
+    info: 删除成功
+    data: { tenant_id: $<team_id>, name: 修改团队名称, password: 'Lanhu123', cur_user_id: $<u_id> }
+    params: { team_id: team_id }
+    get:
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+  - api_name: dissolve_tenant
+    info: 再次删除团队
+    data: { tenant_id: $<team_id>, name: 修改团队名称, password: 'Lanhu123', cur_user_id: $<u_id> }
+    params: { team_id: team_id }
+    get:
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '05001'
+#invite_normal:
+#  - api_name: invite_normal
+#    info: 通过手机号和邮箱发送邀请
+#    data: { data: { tenant_id: $<team_id>,url: '',user_id: $<u_id>,project_ids: [ ],share_type: invite_link, phone_numbers: [ { nickname: '',role: member,phone: 18400004444 } ],emails: [ { nickname: '',role: member,email: bj1@163.com } ] },tenant_id: $<team_id>,cur_user_id: $<u_id> }
+#    params: { team_id: team_id }
+#    get:
+#      team_id: admin_team_id
+#      u_id: test_uid
+#    assertion:
+#      code: "00000"
+
+admin_member_invite:
+  - api_name: send_link
+    info: 通过手机号和邮箱发送邀请
+    get:
+      team_id: admin_team_id
+      admin_team_name: admin_team_name
+      projectB_id: projectB_id
+      admin_project_source_id_A: admin_project_source_id_A
+      admin_project_name_A: admin_project_name_A
+      url: base_url
+      invite_id: test_uid
+    data: { data: { team_id: $<team_id>, team_name: $<admin_team_name>, avatar: null,
+                    username: '', color: green, invite_id: $<invite_id>, url: "https://lanhuapp.com/dashboard/#/item?tid=$<team_id>",
+                    expire_time: 1209600, project_ids: '', share_type: invite_link }, tenant_users: [ ],
+      emails: [ { email: bj123@jwzg.com, role: '203' } ], phone_numbers: [ ] }
+    assertion:
+      result.code:
+        - '00000'
+        - '30028'
+
+
+
+invite_resend:
+  - api_name: invite_resend
+    info: 批量重发邀请
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, ids: [ $<normal_inviter1>,
+                                                                $<normal_inviter2> ] }
+    get:
+      team_id: admin_team_id
+      normal_inviter1: normal_inviter1
+      normal_inviter2: normal_inviter2
+      u_id: test_uid
+    assertion:
+      code:
+        - '00000'
+        - '00001'
+
+invite_revoke:
+  - api_name: invite_revoke
+    info: 批量撤销邀请
+    data: { tenant_id: $<team_id>, cur_user_id: $<u_id>, ids: [ $<normal_inviter1>,
+                                                                $<normal_inviter2> ] }
+    get:
+      team_id: admin_team_id
+      normal_inviter1: normal_inviter1
+      normal_inviter2: normal_inviter2
+      u_id: test_uid
+    assertion:
+      code:
+        - '00000'
+        - '00001'
+share_link:
+  - api_name: share_link
+    info: 生成邀请链接
+    data: { data: { team_id: $<team_id>,team_name: $<team_name>,invite_id: $<u_id>,project_ids: "" ,role: "203",url: "$<url>/web/#/item?tid=$<team_id>",share_type: invite_link },expire_time: 1209600 }
+    authorization: true
+    get:
+      url: base_url
+      team_id: admin_team_id
+      team_name: admin_team_name
+      u_id: test_uid
+    set:
+      share_short_id: $.result.data.share_short_id
+    assertion:
+      result.msg: Success
+  - api_name: share_link
+    info: 生成邀请链接team_B
+    data: { data: { team_id: $<team_id>,team_name: $<team_name>,invite_id: $<u_id>,project_ids: "" ,role: "203",url: "$<url>/web/#/item?tid=$<team_id>",share_type: invite_link },expire_time: 1209600 }
+    authorization: true
+    get:
+      url: base_url
+      team_id: admin_team_id_B
+      team_name: admin_team_name_B
+      u_id: test_uid
+    set:
+      share_short_id_B: $.result.data.share_short_id
+    assertion:
+      result.msg: Success
+
+resolve_link:
+  - api_name: resolve_link
+    info: 解析邀请链接
+    data: { short_id: $<share_short_id> }
+    get:
+      share_short_id: share_short_id
+    assertion:
+      success: true
+  - api_name: resolve_link
+    info: 解析邀请链接team_B
+    data: { short_id: $<share_short_id> }
+    get:
+      share_short_id: share_short_id_B
+    assertion:
+      success: true
+#加入团队
+link_join_team:
+  - api_name: member_add
+    info: 加入团队
+    data: { team_id: $<team_id>, share_short_id: $<share_short_id> }
+    get:
+      share_short_id: share_short_id
+      team_id: admin_team_id
+    assertion:
+      success: true
+  - api_name: member_add
+    info: 加入团队
+    data: { team_id: $<team_id>, share_short_id: $<share_short_id> }
+    get:
+      share_short_id: share_short_id_B
+      team_id: admin_team_id_B
+    assertion:
+      success: true
+
+admin_create_project:
+  - api_name: workbench_file_add
+    info: 创建admin项目A
+    data: { tenantId: $<team_id>, sourceName: '项目A', extend: { prjType: mobile, addUsers: [ ] ,isPublic: "0" },
+            orderIndex: 49500, sourceType: dc_prj, parentId: 0, userId: $<uid> }
+    get:
+      uid: test_uid
+      team_id: admin_team_id
+    set:
+      admin_project_id_A: $.data.id
+      admin_project_source_id_A: $.data.sourceId
+      admin_project_name_A: $.data.sourceName
+    assertion:
+      msg: success
+  - api_name: workbench_file_add
+    info: 创建admin项目B
+    data: { tenantId: $<team_id>, sourceName: '项目B', extend: { prjType: mobile, addUsers: [ ] ,isPublic: "0" },
+            orderIndex: 49600, sourceType: dc_prj, parentId: 0, userId: $<uid> }
+    get:
+      uid: test_uid
+      team_id: admin_team_id
+    set:
+      admin_project_id_B: $.data.id
+      admin_project_source_id_B: $.data.sourceId
+      admin_project_name_B: $.data.sourceName
+    assertion:
+      msg: success
+
+admin_update_projects:
+  - api_name: admin_update_projects
+    info: 批量更新成员项目
+    data: { user_ids: [ $<user_member_id> ], project_ids: [ $<admin_project_id_A>, $<admin_project_id_B> ],
+            action: '2003', batch: false, tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+      admin_project_id_A: admin_project_id_A
+      admin_project_id_B: admin_project_id_B
+    assertion:
+      code: '00000'
+
+update_member_info:
+  - api_name: update_member_info
+    info: 成员信息修改
+    data: { user_id: $<user_member_id>, nickname: 成员重命名, tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+put_member_groups:
+  - api_name: put_member_groups
+    info: 用户增加多个用户组
+    data: { data: [ { user_id: $<user_member_id>, add_groups: [ $<group_id> ], rm_groups: [ ] } ],
+            tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      group_id: group_id_A
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+delete_member:
+  - api_name: delete_member
+    info: 移除成员
+    data: { group_id: $<group_id>, user_id: $<user_member_id>, tenant_id: $<team_id>,
+            cur_user_id: $<u_id> }
+    get:
+      group_id: group_id_A
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+
+post_member:
+  - api_name: post_member
+    info: 添加成员
+    data: { group_id: $<group_id>, member_list: [ $<user_member_id>, $<u_id> ], tenant_id: $<team_id>,
+            cur_user_id: $<u_id> }
+    get:
+      group_id: group_id_A
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+group_member_list:
+  - api_name: group_member_list
+    info: 用户组成员
+    data: { page_no: 1, page_size: 20, group_id: $<group_id>, tenant_id: $<team_id>,
+            cur_user_id: $<u_id> }
+    get:
+      group_id: group_id_A
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+get_member_groups:
+  - api_name: get_member_groups
+    info: 某个成员所属用户组
+    data: { user_id: $<user_member_id>, tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+member_groups:
+  - api_name: member_groups
+    info: 批量用户增加用户组
+    data: { user_ids: [ $<user_member_id> ], group_id: $<group_id>, tenant_id: $<team_id>,
+            cur_user_id: $<u_id> }
+    get:
+      group_id: group_id_A
+      user_member_id: test_uid
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+update_group_order:
+  - api_name: update_group_order
+    info: 更新用户组顺序
+    data: { group_order_list: [ $<group_id_A>, $<group_id_B> ], tenant_id: $<team_id>,
+            cur_user_id: $<u_id> }
+    get:
+      group_id_A: group_id_A
+      group_id_B: group_id_B
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+trigger_condition_judgment:
+  - api_name: trigger_condition_judgment
+    info: 触发条件判断
+    data: { group: admin_introduction, transform: '1', tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+merge_tenant_old:
+  - api_name: merge_tenant_old
+    info: 合并企业-老，A合并到B
+    data: { target_tenant_id: $<admin_team_id_B>, mode: 0, folder_name: $<admin_team_name_B>,
+            tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      admin_team_name_B: admin_team_name_B
+      admin_team_id_B: admin_team_id_B
+      team_id: admin_team_id
+      u_id: user_member_id
+    assertion:
+      code: '00000'
+
+transfer_tenant:
+  - api_name: transfer_tenant
+    info: 移交企业
+    data: { to_user_id: $<user_member_id>, tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: user_member_id
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+  - api_name: transfer_tenant
+    info: 移交企业B
+    data: { to_user_id: $<user_member_id>, tenant_id: $<team_id>, cur_user_id: $<u_id> }
+    get:
+      user_member_id: user_member_id
+      team_id: admin_team_id_B
+      u_id: test_uid
+    assertion:
+      code: '00000'
+member_resign:
+  - api_name: member_resign
+    info: 移出团队
+    data: { user_id: $<u_id>, tenant_id: $<team_id>, cur_user_id: $<user_member_id> }
+    get:
+      user_member_id: user_member_id
+      team_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+close_new_guide:
+  - api_name: close_new_guide
+    info: 完成新人引导
+    data: { info: [ { group: saas_introduction, isFirstEnterAuth_$<team_id>: false } ] }
+    get:
+      team_id: admin_team_id
+    assertion:
+      code: '00000'
+
+
+
+user_teams:
+  - api_name: user_teams
+    info: 获取用户团队
+    data: { }
+
+watermark:
+  - api_name: get_watermark
+    info: 获取当前团队水印状态
+    data: { tenant_id: $<tenant_id>, cur_user_id: $<u_id> }
+    get:
+      tenant_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+  - api_name: put_watermark
+    info: 设置当前团队水印
+    data: { tenant_id: $<tenant_id>, cur_user_id: $<u_id>, state: '1' }
+    get:
+      tenant_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00030'
+
+get_saml:
+  - api_name: get_saml
+    info: 获取团队 SAML 设置
+    data: { tenant_id: $<tenant_id>, cur_user_id: $<u_id> }
+    get:
+      tenant_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+
+get_switch_saml:
+  - api_name: get_switch_saml
+    info: 获取 SAML 开关状态
+    data: { tenant_id: $<tenant_id>, cur_user_id: $<u_id> }
+    get:
+      tenant_id: admin_team_id
+      u_id: test_uid
+    assertion:
+      code: '00000'
+
+quit_tenant:
+  - data: { team_id: $<team_id> }
+    api_name: quit_team
+    info: 退出团队
+    get:
+      team_id: admin_team_id_B
+    assertion:
+      code: "00000"
+      msg: Success

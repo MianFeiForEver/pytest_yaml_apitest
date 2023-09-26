@@ -162,7 +162,7 @@ repo_get_group:
   - api_name: repo_get_group
     get:
       team_id: team_id
-      item_id: repo_file_id
+      repo_file_id: repo_file_id
 #    set:
 #      vde_ids: $.result[0].children[?(@.is_join==False)].id
     params: { team_id: team_id,item_id: repo_file_id }

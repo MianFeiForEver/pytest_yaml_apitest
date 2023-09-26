@@ -9,4 +9,14 @@ get_company_member:
   method: get
   body_type: json
 
+create_team_setting:
+  address: /api/epm/admin/create_team_setting
+  method: put
+  body_type: json
+
+process_info:
+  address: /api/epm/admin/process_info
+  method: put
+  body_type: json
+
 

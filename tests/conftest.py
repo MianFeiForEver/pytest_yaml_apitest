@@ -97,14 +97,25 @@ def pytest_terminal_summary(terminalreporter):
 
 @pytest.fixture()
 def login_admin():
-    data = {"email": get_value("admin_email"), "password": get_value("admin_password")}
-    client = login(data)
+    client = login("admin")
     if not get_value("uid"):
         set_value("uid", client.res_to_json_path("$.id"))
     return True
 
 
-def login(data):
+@pytest.fixture()
+def login_test():
+    client = login("test")
+    if not get_value("test_uid"):
+        set_value("test_uid", client.res_to_json_path("$.id"))
+    return True
+
+
+def login(user="admin"):
+    if user == "admin":
+        data = {"email": get_value("admin_email"), "password": get_value("admin_password")}
+    else:
+        data = {"email": get_value("test_email"), "password": get_value("test_password")}
     client = api(api_name="login", data=data)
     ticket = client.res_to_json_path("$.result.ticket")
     client = auth(ticket, "login", "password")
@@ -129,39 +140,52 @@ def auth(ticket, action, action_type):
 
 @pytest.fixture(scope="session", autouse=True)
 def session_setup_teardown():
-    user_data = {"email": get_value("admin_email"), "password": get_value("admin_password")}
-    client = login(user_data)
+    client = login("admin")
     set_value("uid", client.res_to_json_path("$.id"))
-    team_ids = jsonpath(client.res_json, '$.teams[?(@.name=="接口自动化团队")]..id')
-    if team_ids:
-        for team_id in team_ids:
-            dissolve_tenant(team_id)
-    setup_team()
-    clear_tester()
+    team_dict = {}
+    team_names = ["接口自动化团队", "TestTeamB", "TestTeamA"]
+    for team_name in team_names:
+        team_dict[team_name] = jsonpath(client.res_json, f'$.teams[?(@.name=="{team_name}")]..id')
+    for team_name, team_ids in team_dict.items():
+        if team_ids:
+            for team_id in team_ids:
+                dissolve_tenant(team_id, team_name)
+    create_team()
+    corp_setup()
+    setup_tester()
     yield
-    login(user_data)
-    dissolve_tenant(get_value("team_id"))
+    if team_id := get_value("team_id"):
+        login("admin")
+        dissolve_tenant(team_id, "接口自动化团队")
 
 
-def setup_team():
+def corp_setup():
+    api(api_name="create_team_setting", data={"create_team_switch": True}, cookie=get_value("cookie"))
+    api(api_name="process_info", data={"active_status": False, "id": 1}, cookie=get_value("cookie"))
+    api(api_name="process_info", data={"active_status": False, "id": 2}, cookie=get_value("cookie"))
+
+
+def create_team():
     data = {"name": "接口自动化团队"}
     params = {"team_id": data_f("uuid")}
     client = api(api_name="create_team", cookie=get_value("cookie"), data=data, params=params)
     set_value("team_id", client.res_to_json_path("$..id"))
 
 
-def clear_tester():
+def setup_tester():
     client = api(api_name="get_company_member", cookie=get_value("cookie"),
                  data={"search_key": get_value("test_email"), "order_key": "time|desc"})
 
-    if tester_id := jmespath.search(f"result.users[?(@.email=='{get_value('test_email')}')].id",
-                                    client.res_json):
-        api(api_name="del_company_member", cookie=get_value("cookie"),
-            data={"user_id": tester_id, "transfer_user_id": get_value("uid")})
+    if not jmespath.search(f"result.users[?(@.email=='{get_value('test_email')}')].id", client.res_json):
+        api(api_name="register", data={"email": get_value("test_email"), "password": get_value("test_password")})
+    # if tester_id := jmespath.search(f"result.users[?(@.email=='{get_value('test_email')}')].id",
+    #                                 client.res_json):
+    #     api(api_name="del_company_member", cookie=get_value("cookie"),
+    #         data={"user_id": tester_id, "transfer_user_id": get_value("uid")})
 
 
-def dissolve_tenant(team_id):
-    dissolve_data = {"tenant_id": team_id, "name": "接口自动化团队", "password": get_value("admin_password"),
+def dissolve_tenant(team_id, team_name):
+    dissolve_data = {"tenant_id": team_id, "name": team_name, "password": get_value("admin_password"),
                      "cur_user_id": get_value("uid")}
 
     api(api_name="dissolve_tenant", cookie=get_value("cookie"), data=dissolve_data)

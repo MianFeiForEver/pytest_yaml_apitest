@@ -316,13 +316,6 @@ member_role_list:
   data:
     - tenant_id
     - cur_user_id
-#生成邀请链接
-invite_member:
-  address: /api/sharesvc/link
-  method: post
-  body_type: json
-  data:
-    - tenant_id
 
 #通过手机号和邮箱发送邀请
 invite_revoke:
@@ -376,13 +369,6 @@ invite_deny:
     - tenant_id
     - cur_user_id
 
-# 点击邀请链接-解析邀请链接
-resolve_link:
-  address: /api/share/url/resolve
-  method: post
-  body_type: json
-  data:
-    - short_id
 
 
 # 移出团队
